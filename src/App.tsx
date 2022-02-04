@@ -1,13 +1,15 @@
 import React from 'react';
 
-function App() {
+import { Route, Routes } from 'react-router-dom';
+
+import AreasIndex from 'pages/areas';
+
+const App: React.FC = () => {
   return (
-    <div>
-      <button type="button" className="btn btn-primary">
-        Hello world
-      </button>
-    </div>
+    <Routes>
+      <Route path="/edit" element={<AreasIndex />} />
+    </Routes>
   );
-}
+};
 
 export default App;

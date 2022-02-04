@@ -24,9 +24,13 @@ module.exports = {
       },
     },
   },
+  globals: {
+    JSX: true,
+  },
   rules: {
     'no-unused-vars': 'off',
     'no-param-reassign': 'off',
+    'no-plusplus': 'off',
     'import/extensions': [
       'error',
       'always',
@@ -47,7 +51,17 @@ module.exports = {
       'error',
       { extensions: ['.js', '.jsx', '.ts', '.tsx'] },
     ],
-    '@typescript-eslint/no-unused-vars': ['error'],
+    'react/function-component-definition': [
+      2,
+      {
+        namedComponents: 'arrow-function',
+        unnamedComponents: 'arrow-function',
+      },
+    ],
+    'react/jsx-props-no-spreading': 'off',
+    'react/destructuring-assignment': 'off',
+    '@typescript-eslint/no-unused-vars': 'error',
+    '@typescript-eslint/explicit-function-return-type': ['error'],
     'simple-import-sort/imports': [
       'error',
       {
