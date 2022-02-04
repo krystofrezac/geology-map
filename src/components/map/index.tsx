@@ -24,6 +24,7 @@ const MapIndex: React.FC<MapProps> = props => (
     <MouseControl zoom pan wheel />
     <ZoomControl left={10} />
     <CompassControl left={10} top={50} />
+    {props.children}
   </Map>
 );
 export default MapIndex;
