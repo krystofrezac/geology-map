@@ -40,6 +40,10 @@ const areasSlice = createSlice({
       state.markerShowArea = action.payload.id;
       state.editingArea = undefined;
     },
+
+    hideAreaMarkers(state) {
+      state.markerShowArea = undefined;
+    },
     deleteAreaCoords(
       state,
       action: PayloadAction<{ id: string; coordsIndex: number }>,
@@ -96,6 +100,7 @@ export const {
   startEditingArea,
   stopEditingArea,
   showAreaMarkers,
+  hideAreaMarkers,
   deleteAreaCoords,
   startEditingMarker,
   stopEditingMarker,

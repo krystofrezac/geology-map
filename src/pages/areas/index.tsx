@@ -9,6 +9,7 @@ import {
   areaStopMovingCoordinates,
   deleteAreaCoords,
   findArea,
+  hideAreaMarkers,
   showAreaMarkers,
   startEditingArea,
   startEditingMarker,
@@ -61,8 +62,12 @@ const AreasIndex: React.FC = () => {
     dispatch(stopEditingArea());
   };
 
-  const handleMarkerShow = (id: string): void => {
+  const handleMarkersShow = (id: string): void => {
     dispatch(showAreaMarkers({ id }));
+  };
+
+  const handleMarkersHide = (): void => {
+    dispatch(hideAreaMarkers());
   };
 
   const handleMarkerEditStop = (): void => {
@@ -137,11 +142,13 @@ const AreasIndex: React.FC = () => {
       <Areas
         areas={areas}
         editingArea={editingArea}
+        markerShowArea={markerShowArea}
         onAddAreaOpen={handleAddAreaOpen}
         onAddAreaClose={handleAddAreaClose}
         onAreaEditStart={handleAreaEditStart}
         onAreaEditEnd={handleAreaEditEnd}
-        onMarkersShow={handleMarkerShow}
+        onMarkersShow={handleMarkersShow}
+        onMarkersHide={handleMarkersHide}
       />
       {movingCoords && (
         <BottomContainer>

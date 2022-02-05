@@ -9,6 +9,22 @@ import SideCardIndex from 'components/sideCard';
 import { AreasProps } from './types';
 
 const Areas: React.FC<AreasProps> = props => {
+  const handleAreaEditClick = (id: string): void => {
+    if (props.editingArea?.id === id) {
+      props.onAreaEditEnd();
+      return;
+    }
+    props.onAreaEditStart(id);
+  };
+
+  const handleMarkersShowClick = (id: string): void => {
+    if (props.markerShowArea?.id === id) {
+      props.onMarkersHide();
+      return;
+    }
+    props.onMarkersShow(id);
+  };
+
   return (
     <>
       <ContentContainerIndex>
@@ -26,19 +42,29 @@ const Areas: React.FC<AreasProps> = props => {
           {props.areas.map(area => (
             <div
               key={area.id}
-              className={`flex${
+              className={`flex p-2${
                 area.id === props.editingArea?.id ? ' bg-blue-50' : ''
               }`}
             >
               {area.name}
-              <PlusIcon
-                className="h-4 h-4 ml-auto"
-                onClick={() => props.onAreaEditStart(area.id)}
-              />
-              <LocationMarkerIcon
-                className="h-4 w-4"
-                onClick={() => props.onMarkersShow(area.id)}
-              />
+              <button
+                type="button"
+                className={`btn btn-xs h-6 w-6 p-1 ml-auto mr-1${
+                  props.editingArea?.id === area.id ? ' btn-primary' : ''
+                }`}
+                onClick={() => handleAreaEditClick(area.id)}
+              >
+                <PlusIcon />
+              </button>
+              <button
+                type="button"
+                className={`btn btn-xs h-6 w-6 p-1${
+                  props.markerShowArea?.id === area.id ? ' btn-primary' : ''
+                }`}
+                onClick={() => handleMarkersShowClick(area.id)}
+              >
+                <LocationMarkerIcon />
+              </button>
             </div>
           ))}
         </SideCardIndex>
