@@ -6,6 +6,8 @@ import BottomContainer from 'components/bottomContainer';
 import ContentContainerIndex from 'components/contentContainer';
 import SideCardIndex from 'components/sideCard';
 
+import ColorDotIndex from '../../components/bottomContainer/colorDot';
+
 import { AreasProps } from './types';
 
 const Areas: React.FC<AreasProps> = props => {
@@ -46,7 +48,10 @@ const Areas: React.FC<AreasProps> = props => {
                 area.id === props.editingArea?.id ? ' bg-blue-50' : ''
               }`}
             >
-              {area.name}
+              <div className="flex flex-row items-center">
+                <ColorDotIndex color={area.color} />
+                <span className="pl-2"> {area.name}</span>
+              </div>
               <button
                 type="button"
                 className={`btn btn-xs h-6 w-6 p-1 ml-auto mr-1${

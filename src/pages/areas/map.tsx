@@ -19,7 +19,17 @@ const Map: React.FC<MapProps> = props => {
         ))}
       </MarkerLayer>
       <PathLayer>
-        {props.editingArea && <Polygon coords={props.editingArea?.coords} />}
+        {props.editingArea && (
+          <Polygon
+            coords={props.editingArea?.coords}
+            options={{
+              color: props.editingArea.color,
+              opacity: 0.5,
+              outlineColor: props.editingArea.color,
+              outlineOpacity: 1,
+            }}
+          />
+        )}
         {props.areas.map(
           area =>
             area.id !== props.editingArea?.id && (
@@ -27,6 +37,7 @@ const Map: React.FC<MapProps> = props => {
                 key={area.id}
                 coords={area.coords}
                 options={{
+                  color: area.color,
                   opacity: props.editingArea ? 0.1 : 0.5,
                   outlineOpacity: 0,
                 }}

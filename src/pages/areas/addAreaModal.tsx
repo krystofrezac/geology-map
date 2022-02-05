@@ -1,16 +1,12 @@
 import React, { ChangeEvent, useState } from 'react';
 
-import { useDispatch } from 'store/hooks';
-import { addArea } from 'store/slices/areas';
-
-import { TextInput } from 'components/input';
+import { ColorInput, TextInput } from 'components/input';
 import ModalIndex from 'components/modal';
 
 import { AddAreaModalProps } from './types';
 
 const AddAreaModal: React.FC<AddAreaModalProps> = props => {
-  const [state, setState] = useState({ name: '' });
-  const dispatch = useDispatch();
+  const [state, setState] = useState({ name: '', color: '#000' });
 
   const handleClose = (): void => {
     props.onClose();
@@ -19,13 +15,17 @@ const AddAreaModal: React.FC<AddAreaModalProps> = props => {
   const handleAdd = (): void => {
     if (state.name.length === 0) return;
 
-    dispatch(addArea({ name: state.name }));
-    setState(prevState => ({ ...prevState, name: '' }));
+    props.onAreaAdd(state);
+    setState(prevState => ({ ...prevState, name: '', color: '#000' }));
     props.onClose();
   };
 
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setState(prevState => ({ ...prevState, name: e.target.value }));
+  };
+
+  const handleColorChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    setState(prevState => ({ ...prevState, color: e.target.value }));
   };
 
   return (
@@ -55,6 +55,11 @@ const AddAreaModal: React.FC<AddAreaModalProps> = props => {
         label="Název oblasti"
         value={state.name}
         onChange={handleNameChange}
+      />
+      <ColorInput
+        label="Barva"
+        value={state.color}
+        onChange={handleColorChange}
       />
     </ModalIndex>
   );

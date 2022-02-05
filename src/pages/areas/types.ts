@@ -1,8 +1,14 @@
 import { MapEventListener } from 'react-mapycz';
 import { Area } from 'store/slices/types/areas';
 
+export interface AreaAddValues {
+  name: string;
+  color: string;
+}
+
 export interface AddAreaModalProps {
   open: boolean;
+  onAreaAdd: (values: AreaAddValues) => void;
   onClose: () => void;
 }
 

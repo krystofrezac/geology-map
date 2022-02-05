@@ -22,8 +22,13 @@ const areasSlice = createSlice({
   name: 'areas',
   initialState,
   reducers: {
-    addArea(state, action: PayloadAction<{ name: string }>) {
-      state.areas.push({ id: nanoid(), name: action.payload.name, coords: [] });
+    addArea(state, action: PayloadAction<{ name: string; color: string }>) {
+      state.areas.push({
+        id: nanoid(),
+        name: action.payload.name,
+        color: action.payload.color,
+        coords: [],
+      });
     },
     startEditingArea(state, action: PayloadAction<{ id: string }>) {
       state.editingArea = action.payload.id;

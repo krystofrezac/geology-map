@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { MapEventListener } from 'react-mapycz';
 import { useDispatch, useSelector } from 'store/hooks';
 import {
+  addArea,
   addAreaCoordinates,
   areaMoveCoordinates,
   areaStartMovingCoordinates,
@@ -23,6 +24,7 @@ import AddAreaModal from './addAreaModal';
 import Areas from './areas';
 import EditMarkerModal from './editMarkerModal';
 import Map from './map';
+import { AreaAddValues } from './types';
 
 const AreasIndex: React.FC = () => {
   const [state, setState] = useState({
@@ -100,6 +102,10 @@ const AreasIndex: React.FC = () => {
     dispatch(areaStopMovingCoordinates());
   };
 
+  const handleAreaAdd = (values: AreaAddValues): void => {
+    dispatch(addArea(values));
+  };
+
   const handleMapEvent: MapEventListener = (e, coords) => {
     // @ts-ignore
     if (e.type === 'marker-click') {
@@ -132,7 +138,11 @@ const AreasIndex: React.FC = () => {
         markerShowArea={markerShowArea}
         onMapEvent={handleMapEvent}
       />
-      <AddAreaModal open={state.addAreaModal} onClose={handleAddAreaClose} />
+      <AddAreaModal
+        open={state.addAreaModal}
+        onClose={handleAddAreaClose}
+        onAreaAdd={handleAreaAdd}
+      />
       <EditMarkerModal
         open={editingMarkerIndex !== undefined}
         onClose={handleMarkerEditStop}

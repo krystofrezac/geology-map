@@ -6,6 +6,7 @@ export interface Coords {
 export interface Area {
   id: string;
   name: string;
+  color: string;
   coords: {
     lat: number;
     lng: number;
