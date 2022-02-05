@@ -10,7 +10,7 @@ const DeleteModal: React.FC<DeleteModalProps> = props => {
   const [state, setState] = useState<{
     area: Area | undefined;
     open: boolean;
-  }>({ area: undefined, open: true });
+  }>({ area: undefined, open: false });
 
   // persist last area so when modal is closing there is not undefined in text
   useEffect(() => {
