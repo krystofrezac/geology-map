@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { useDispatch, useSelector } from 'store/hooks';
 import {
+  deleteArea,
   findArea,
   hideAreaMarkers,
   showAreaMarkers,
@@ -12,15 +13,18 @@ import {
 } from 'store/slices/areas';
 
 import AreaList from './areaList';
+import DeleteModal from './deleteModal';
+import { AreaListIndexState } from './types';
 
 const AreaListIndex: React.FC = () => {
-  const { areas, editingAreaCoords, markerShowArea } = useSelector(state => ({
-    areas: state.areas.areas,
-    editingAreaCoords: findArea(
-      state.areas.areas,
-      state.areas.editingAreaCoords,
-    ),
-    markerShowArea: findArea(state.areas.areas, state.areas.markerShowArea),
+  const [state, setState] = useState<AreaListIndexState>({
+    deleteArea: undefined,
+  });
+
+  const { areas, editingAreaCoords, markerShowArea } = useSelector(s => ({
+    areas: s.areas.areas,
+    editingAreaCoords: findArea(s.areas.areas, s.areas.editingAreaCoords),
+    markerShowArea: findArea(s.areas.areas, s.areas.markerShowArea),
   }));
   const dispatch = useDispatch();
 
@@ -45,19 +49,42 @@ const AreaListIndex: React.FC = () => {
   const handleAreaEdit = (areaId: string): void => {
     dispatch(startEditingArea({ areaId }));
   };
+  const handleOpenDeleteModal = (areaId: string): void => {
+    const area = findArea(areas, areaId);
+    if (!area) return;
+
+    setState(prevState => ({ ...prevState, deleteArea: area }));
+  };
+  const handleAreaDelete = (): void => {
+    if (!state.deleteArea) return;
+    dispatch(deleteArea({ id: state.deleteArea?.id }));
+    setState(prevState => ({ ...prevState, deleteArea: undefined }));
+  };
+
+  const handleDeleteModalClose = (): void => {
+    setState(prevState => ({ ...prevState, deleteArea: undefined }));
+  };
 
   return (
-    <AreaList
-      areas={areas}
-      editingAreaCoords={editingAreaCoords}
-      markerShowArea={markerShowArea}
-      onAddAreaOpen={handleAddAreaOpen}
-      onAreaEditCoordsStart={handleAreaEditCoordsStart}
-      onAreaEditCoordsEnd={handleAreaEditCoordsEnd}
-      onMarkersShow={handleMarkersShow}
-      onMarkersHide={handleMarkersHide}
-      onAreaEdit={handleAreaEdit}
-    />
+    <>
+      <AreaList
+        areas={areas}
+        editingAreaCoords={editingAreaCoords}
+        markerShowArea={markerShowArea}
+        onAddAreaOpen={handleAddAreaOpen}
+        onAreaEditCoordsStart={handleAreaEditCoordsStart}
+        onAreaEditCoordsEnd={handleAreaEditCoordsEnd}
+        onMarkersShow={handleMarkersShow}
+        onMarkersHide={handleMarkersHide}
+        onAreaEdit={handleAreaEdit}
+        onAreaDelete={handleOpenDeleteModal}
+      />
+      <DeleteModal
+        area={state.deleteArea}
+        onDelete={handleAreaDelete}
+        onCancel={handleDeleteModalClose}
+      />
+    </>
   );
 };
 

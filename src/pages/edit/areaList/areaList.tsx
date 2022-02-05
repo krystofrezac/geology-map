@@ -4,6 +4,7 @@ import {
   LocationMarkerIcon,
   PencilIcon,
   PlusIcon,
+  TrashIcon,
 } from '@heroicons/react/outline';
 
 import ColorDotIndex from 'components/bottomContainer/colorDot';
@@ -50,7 +51,14 @@ const AreaList: React.FC<AreaListProps> = props => {
             </div>
             <button
               type="button"
-              className="btn btn-xs h-6 w-6 p-1 ml-auto mr-1"
+              className="btn btn-xs btn-error h-6 w-6 p-1 ml-auto mr-1"
+              onClick={() => props.onAreaDelete(area.id)}
+            >
+              <TrashIcon />
+            </button>
+            <button
+              type="button"
+              className="btn btn-xs btn-info h-6 w-6 p-1 mr-1"
               onClick={() => props.onAreaEdit(area.id)}
             >
               <PencilIcon />

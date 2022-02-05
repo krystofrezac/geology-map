@@ -1,5 +1,9 @@
 import { Area } from 'store/slices/types/areas';
 
+export interface AreaListIndexState {
+  deleteArea?: Area;
+}
+
 export interface AreaListProps {
   areas: Area[];
   editingAreaCoords?: Area;
@@ -11,4 +15,11 @@ export interface AreaListProps {
   onMarkersShow: (id: string) => void;
   onMarkersHide: () => void;
   onAreaEdit: (id: string) => void;
+  onAreaDelete: (id: string) => void;
+}
+
+export interface DeleteModalProps {
+  area?: Area;
+  onDelete: () => void;
+  onCancel: () => void;
 }

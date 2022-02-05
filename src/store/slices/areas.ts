@@ -49,6 +49,12 @@ const areasSlice = createSlice({
       area.name = name;
       area.color = color;
     },
+    deleteArea(state, action: PayloadAction<{ id: string }>) {
+      const areaIndex = state.areas.findIndex(
+        area => area.id === action.payload.id,
+      );
+      state.areas.splice(areaIndex, 1);
+    },
     startEditingAreaCoords(state, action: PayloadAction<{ areaId: string }>) {
       state.editingAreaCoords = action.payload.areaId;
       state.markerShowArea = undefined;
@@ -135,6 +141,7 @@ const areasSlice = createSlice({
 export const {
   addArea,
   editArea,
+  deleteArea,
   addAreaCoordinates,
   startEditingAreaCoords,
   stopEditingAreaCoords,
