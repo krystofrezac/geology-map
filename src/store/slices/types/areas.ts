@@ -15,7 +15,7 @@ export interface Area {
 
 export interface AreasState {
   areas: Area[];
-  editingArea?: string;
+  editingAreaCoords?: string;
   markerShowArea?: string;
   editingMarkerIndex?: number;
   movingCoords?: {

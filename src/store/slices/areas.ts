@@ -4,7 +4,7 @@ import { Area, AreasState, Coords } from './types/areas';
 
 const initialState: AreasState = {
   areas: [],
-  editingArea: undefined,
+  editingAreaCoords: undefined,
   markerShowArea: undefined,
   editingMarkerIndex: undefined,
   movingCoords: undefined,
@@ -30,20 +30,31 @@ const areasSlice = createSlice({
         coords: [],
       });
     },
-    startEditingArea(state, action: PayloadAction<{ id: string }>) {
-      state.editingArea = action.payload.id;
+    editArea(
+      state,
+      action: PayloadAction<{ id: string; name: string; color: string }>,
+    ) {
+      const area = findArea(state.areas, action.payload.id);
+      if (!area) return;
+
+      const { name, color } = action.payload;
+      area.name = name;
+      area.color = color;
+    },
+    startEditingAreaCoords(state, action: PayloadAction<{ id: string }>) {
+      state.editingAreaCoords = action.payload.id;
       state.markerShowArea = undefined;
     },
-    stopEditingArea(state) {
-      state.editingArea = undefined;
+    stopEditingAreaCoords(state) {
+      state.editingAreaCoords = undefined;
     },
     addAreaCoordinates(state, action: PayloadAction<{ coords: Coords }>) {
-      const area = findArea(state.areas, state.editingArea);
+      const area = findArea(state.areas, state.editingAreaCoords);
       area?.coords.push(action.payload.coords);
     },
     showAreaMarkers(state, action: PayloadAction<{ id: string }>) {
       state.markerShowArea = action.payload.id;
-      state.editingArea = undefined;
+      state.editingAreaCoords = undefined;
     },
 
     hideAreaMarkers(state) {
@@ -101,9 +112,10 @@ const areasSlice = createSlice({
 
 export const {
   addArea,
+  editArea,
   addAreaCoordinates,
-  startEditingArea,
-  stopEditingArea,
+  startEditingAreaCoords,
+  stopEditingAreaCoords,
   showAreaMarkers,
   hideAreaMarkers,
   deleteAreaCoords,

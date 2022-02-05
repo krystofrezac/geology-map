@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 
 import { ColorInput, TextInput } from 'components/input';
 import ModalIndex from 'components/modal';
@@ -6,7 +6,18 @@ import ModalIndex from 'components/modal';
 import { AddAreaModalProps } from './types';
 
 const AddAreaModal: React.FC<AddAreaModalProps> = props => {
-  const [state, setState] = useState({ name: '', color: '#000' });
+  const [state, setState] = useState({ name: '', color: '#000000' });
+
+  useEffect(() => {
+    const { area } = props;
+    if (!area) return;
+
+    setState(prevState => ({
+      ...prevState,
+      name: area.name,
+      color: area.color,
+    }));
+  }, [props.area]);
 
   const handleClose = (): void => {
     props.onClose();
@@ -16,7 +27,7 @@ const AddAreaModal: React.FC<AddAreaModalProps> = props => {
     if (state.name.length === 0) return;
 
     props.onAreaAdd(state);
-    setState(prevState => ({ ...prevState, name: '', color: '#000' }));
+    setState(prevState => ({ ...prevState, name: '', color: '#000000' }));
     props.onClose();
   };
 
@@ -47,7 +58,7 @@ const AddAreaModal: React.FC<AddAreaModalProps> = props => {
           className="btn btn-primary"
           onClick={handleAdd}
         >
-          Přidat oblast
+          {props.area ? 'Upravit oblast' : 'Přidat oblast'}
         </button>,
       ]}
     >

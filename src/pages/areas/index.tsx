@@ -9,12 +9,13 @@ import {
   areaStartMovingCoordinates,
   areaStopMovingCoordinates,
   deleteAreaCoords,
+  editArea,
   findArea,
   hideAreaMarkers,
   showAreaMarkers,
-  startEditingArea,
+  startEditingAreaCoords,
   startEditingMarker,
-  stopEditingArea,
+  stopEditingAreaCoords,
   stopEditingMarker,
 } from 'store/slices/areas';
 
@@ -24,23 +25,24 @@ import AddAreaModal from './addAreaModal';
 import Areas from './areas';
 import EditMarkerModal from './editMarkerModal';
 import Map from './map';
-import { AreaAddValues } from './types';
+import { AreaAddValues, AreasIndexState } from './types';
 
 const AreasIndex: React.FC = () => {
-  const [state, setState] = useState({
-    addAreaModal: false,
+  const [state, setState] = useState<AreasIndexState>({
+    addArea: false,
+    editingArea: undefined,
   });
 
   const {
     areas,
-    editingArea,
+    editingAreaCoords,
     markerShowArea,
     editingMarkerIndex,
     movingCoords,
   } = useSelector(s => {
     return {
       areas: s.areas.areas,
-      editingArea: findArea(s.areas.areas, s.areas.editingArea),
+      editingAreaCoords: findArea(s.areas.areas, s.areas.editingAreaCoords),
       markerShowArea: findArea(s.areas.areas, s.areas.markerShowArea),
       editingMarkerIndex: s.areas.editingMarkerIndex,
       movingCoords: s.areas.movingCoords,
@@ -49,19 +51,23 @@ const AreasIndex: React.FC = () => {
   const dispatch = useDispatch();
 
   const handleAddAreaOpen = (): void => {
-    setState(prevState => ({ ...prevState, addAreaModal: true }));
+    setState(prevState => ({ ...prevState, addArea: true }));
   };
 
   const handleAddAreaClose = (): void => {
-    setState(prevState => ({ ...prevState, addAreaModal: false }));
+    setState(prevState => ({
+      ...prevState,
+      addArea: false,
+      editingArea: undefined,
+    }));
   };
 
-  const handleAreaEditStart = (id: string): void => {
-    dispatch(startEditingArea({ id }));
+  const handleAreaEditCoordsStart = (id: string): void => {
+    dispatch(startEditingAreaCoords({ id }));
   };
 
-  const handleAreaEditEnd = (): void => {
-    dispatch(stopEditingArea());
+  const handleAreaEditCoordsEnd = (): void => {
+    dispatch(stopEditingAreaCoords());
   };
 
   const handleMarkersShow = (id: string): void => {
@@ -74,6 +80,12 @@ const AreasIndex: React.FC = () => {
 
   const handleMarkerEditStop = (): void => {
     dispatch(stopEditingMarker());
+  };
+
+  const handleAreaEdit = (id: string): void => {
+    const area = findArea(areas, id);
+    if (!area) return;
+    setState(prevState => ({ ...prevState, editingArea: area }));
   };
 
   const handleMarkerDelete = (): void => {
@@ -103,6 +115,10 @@ const AreasIndex: React.FC = () => {
   };
 
   const handleAreaAdd = (values: AreaAddValues): void => {
+    if (state.editingArea) {
+      dispatch(editArea({ id: state.editingArea.id, ...values }));
+      return;
+    }
     dispatch(addArea(values));
   };
 
@@ -134,12 +150,13 @@ const AreasIndex: React.FC = () => {
     <>
       <Map
         areas={areas}
-        editingArea={editingArea}
+        editingAreaCoords={editingAreaCoords}
         markerShowArea={markerShowArea}
         onMapEvent={handleMapEvent}
       />
       <AddAreaModal
-        open={state.addAreaModal}
+        open={state.addArea || state.editingArea !== undefined}
+        area={state.editingArea}
         onClose={handleAddAreaClose}
         onAreaAdd={handleAreaAdd}
       />
@@ -151,14 +168,15 @@ const AreasIndex: React.FC = () => {
       />
       <Areas
         areas={areas}
-        editingArea={editingArea}
+        editingAreaCoords={editingAreaCoords}
         markerShowArea={markerShowArea}
         onAddAreaOpen={handleAddAreaOpen}
         onAddAreaClose={handleAddAreaClose}
-        onAreaEditStart={handleAreaEditStart}
-        onAreaEditEnd={handleAreaEditEnd}
+        onAreaEditCoordsStart={handleAreaEditCoordsStart}
+        onAreaEditCoordsEnd={handleAreaEditCoordsEnd}
         onMarkersShow={handleMarkersShow}
         onMarkersHide={handleMarkersHide}
+        onAreaEdit={handleAreaEdit}
       />
       {movingCoords && (
         <BottomContainer>

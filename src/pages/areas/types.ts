@@ -8,6 +8,7 @@ export interface AreaAddValues {
 
 export interface AddAreaModalProps {
   open: boolean;
+  area?: Area;
   onAreaAdd: (values: AreaAddValues) => void;
   onClose: () => void;
 }
@@ -21,20 +22,26 @@ export interface EditMarkerModalProps {
 
 export interface MapProps {
   areas: Area[];
-  editingArea?: Area;
+  editingAreaCoords?: Area;
   markerShowArea?: Area;
   onMapEvent: MapEventListener;
 }
 
 export interface AreasProps {
   areas: Area[];
-  editingArea?: Area;
+  editingAreaCoords?: Area;
   markerShowArea?: Area;
 
   onAddAreaOpen: () => void;
   onAddAreaClose: () => void;
-  onAreaEditStart: (id: string) => void;
-  onAreaEditEnd: () => void;
+  onAreaEditCoordsStart: (id: string) => void;
+  onAreaEditCoordsEnd: () => void;
   onMarkersShow: (id: string) => void;
   onMarkersHide: () => void;
+  onAreaEdit: (id: string) => void;
+}
+
+export interface AreasIndexState {
+  addArea: boolean;
+  editingArea?: Area;
 }

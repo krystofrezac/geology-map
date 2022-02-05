@@ -10,8 +10,8 @@ const Map: React.FC<MapProps> = props => {
   return (
     <MapComponent onEvent={props.onMapEvent}>
       <MarkerLayer>
-        {(props.editingArea?.coords.length || 3) < 3 &&
-          props.editingArea?.coords.map(c => (
+        {(props.editingAreaCoords?.coords.length || 3) < 3 &&
+          props.editingAreaCoords?.coords.map(c => (
             <Marker key={`${c.lat}-${c.lng}`} coords={c} />
           ))}
         {props.markerShowArea?.coords.map(c => (
@@ -19,26 +19,39 @@ const Map: React.FC<MapProps> = props => {
         ))}
       </MarkerLayer>
       <PathLayer>
-        {props.editingArea && (
+        {props.editingAreaCoords && (
           <Polygon
-            coords={props.editingArea?.coords}
+            coords={props.editingAreaCoords?.coords}
             options={{
-              color: props.editingArea.color,
+              color: props.editingAreaCoords.color,
               opacity: 0.5,
-              outlineColor: props.editingArea.color,
+              outlineColor: props.editingAreaCoords.color,
+              outlineOpacity: 1,
+            }}
+          />
+        )}
+        {props.markerShowArea && (
+          <Polygon
+            coords={props.markerShowArea?.coords}
+            options={{
+              color: props.markerShowArea.color,
+              opacity: 0.5,
+              outlineColor: props.markerShowArea.color,
               outlineOpacity: 1,
             }}
           />
         )}
         {props.areas.map(
           area =>
-            area.id !== props.editingArea?.id && (
+            area.id !== props.editingAreaCoords?.id &&
+            area.id !== props.markerShowArea?.id && (
               <Polygon
                 key={area.id}
                 coords={area.coords}
                 options={{
                   color: area.color,
-                  opacity: props.editingArea ? 0.1 : 0.5,
+                  opacity:
+                    props.editingAreaCoords || props.markerShowArea ? 0.2 : 0.5,
                   outlineOpacity: 0,
                 }}
               />

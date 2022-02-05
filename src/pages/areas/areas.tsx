@@ -1,6 +1,10 @@
 import React from 'react';
 
-import { LocationMarkerIcon, PlusIcon } from '@heroicons/react/outline';
+import {
+  LocationMarkerIcon,
+  PencilIcon,
+  PlusIcon,
+} from '@heroicons/react/outline';
 
 import BottomContainer from 'components/bottomContainer';
 import ContentContainerIndex from 'components/contentContainer';
@@ -11,12 +15,12 @@ import ColorDotIndex from '../../components/bottomContainer/colorDot';
 import { AreasProps } from './types';
 
 const Areas: React.FC<AreasProps> = props => {
-  const handleAreaEditClick = (id: string): void => {
-    if (props.editingArea?.id === id) {
-      props.onAreaEditEnd();
+  const handleAreaEditCoordsClick = (id: string): void => {
+    if (props.editingAreaCoords?.id === id) {
+      props.onAreaEditCoordsEnd();
       return;
     }
-    props.onAreaEditStart(id);
+    props.onAreaEditCoordsStart(id);
   };
 
   const handleMarkersShowClick = (id: string): void => {
@@ -42,22 +46,24 @@ const Areas: React.FC<AreasProps> = props => {
             </button>
           </div>
           {props.areas.map(area => (
-            <div
-              key={area.id}
-              className={`flex p-2${
-                area.id === props.editingArea?.id ? ' bg-blue-50' : ''
-              }`}
-            >
+            <div key={area.id} className="flex p-2">
               <div className="flex flex-row items-center">
                 <ColorDotIndex color={area.color} />
                 <span className="pl-2"> {area.name}</span>
               </div>
               <button
                 type="button"
-                className={`btn btn-xs h-6 w-6 p-1 ml-auto mr-1${
-                  props.editingArea?.id === area.id ? ' btn-primary' : ''
+                className="btn btn-xs h-6 w-6 p-1 ml-auto mr-1"
+                onClick={() => props.onAreaEdit(area.id)}
+              >
+                <PencilIcon />
+              </button>
+              <button
+                type="button"
+                className={`btn btn-xs h-6 w-6 p-1 mr-1${
+                  props.editingAreaCoords?.id === area.id ? ' btn-primary' : ''
                 }`}
-                onClick={() => handleAreaEditClick(area.id)}
+                onClick={() => handleAreaEditCoordsClick(area.id)}
               >
                 <PlusIcon />
               </button>
@@ -74,7 +80,7 @@ const Areas: React.FC<AreasProps> = props => {
           ))}
         </SideCardIndex>
       </ContentContainerIndex>
-      {props.editingArea && (
+      {props.editingAreaCoords && (
         <BottomContainer>
           <div className="card bg-white shadow-2xl p-4 mb-4 flex flex-row items-center">
             <span className="text-lg pr-2">
@@ -83,7 +89,7 @@ const Areas: React.FC<AreasProps> = props => {
             <button
               type="button"
               className="btn btn-primary btn-sm"
-              onClick={props.onAreaEditEnd}
+              onClick={props.onAreaEditCoordsEnd}
             >
               Zrušit
             </button>
