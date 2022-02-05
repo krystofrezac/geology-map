@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { LocationMarkerIcon } from '@heroicons/react/outline';
+import { LocationMarkerIcon, PlusIcon } from '@heroicons/react/outline';
 
 import BottomContainer from 'components/bottomContainer';
 import ContentContainerIndex from 'components/contentContainer';
@@ -31,9 +31,13 @@ const Areas: React.FC<AreasProps> = props => {
               }`}
             >
               {area.name}
-              <LocationMarkerIcon
+              <PlusIcon
                 className="h-4 h-4 ml-auto"
                 onClick={() => props.onAreaEditStart(area.id)}
+              />
+              <LocationMarkerIcon
+                className="h-4 w-4"
+                onClick={() => props.onMarkersShow(area.id)}
               />
             </div>
           ))}

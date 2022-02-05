@@ -4,12 +4,23 @@ import { MapEventListener } from 'react-mapycz';
 import { useDispatch, useSelector } from 'store/hooks';
 import {
   addAreaCoordinates,
-  endEditingArea,
+  areaMoveCoordinates,
+  areaStartMovingCoordinates,
+  areaStopMovingCoordinates,
+  deleteAreaCoords,
+  findArea,
+  showAreaMarkers,
   startEditingArea,
+  startEditingMarker,
+  stopEditingArea,
+  stopEditingMarker,
 } from 'store/slices/areas';
+
+import BottomContainer from '../../components/bottomContainer';
 
 import AddAreaModal from './addAreaModal';
 import Areas from './areas';
+import EditMarkerModal from './editMarkerModal';
 import Map from './map';
 
 const AreasIndex: React.FC = () => {
@@ -17,10 +28,21 @@ const AreasIndex: React.FC = () => {
     addAreaModal: false,
   });
 
-  const { areas, editingAreaId } = useSelector(s => ({
-    areas: s.areas.areas,
-    editingAreaId: s.areas.editingArea,
-  }));
+  const {
+    areas,
+    editingArea,
+    markerShowArea,
+    editingMarkerIndex,
+    movingCoords,
+  } = useSelector(s => {
+    return {
+      areas: s.areas.areas,
+      editingArea: findArea(s.areas.areas, s.areas.editingArea),
+      markerShowArea: findArea(s.areas.areas, s.areas.markerShowArea),
+      editingMarkerIndex: s.areas.editingMarkerIndex,
+      movingCoords: s.areas.movingCoords,
+    };
+  });
   const dispatch = useDispatch();
 
   const handleAddAreaOpen = (): void => {
@@ -33,29 +55,85 @@ const AreasIndex: React.FC = () => {
 
   const handleAreaEditStart = (id: string): void => {
     dispatch(startEditingArea({ id }));
-    setState(prevState => ({ ...prevState, editingArea: id }));
   };
 
   const handleAreaEditEnd = (): void => {
-    dispatch(endEditingArea());
+    dispatch(stopEditingArea());
+  };
+
+  const handleMarkerShow = (id: string): void => {
+    dispatch(showAreaMarkers({ id }));
+  };
+
+  const handleMarkerEditStop = (): void => {
+    dispatch(stopEditingMarker());
+  };
+
+  const handleMarkerDelete = (): void => {
+    if (!(markerShowArea && editingMarkerIndex !== undefined)) return;
+    dispatch(
+      deleteAreaCoords({
+        id: markerShowArea.id,
+        coordsIndex: editingMarkerIndex,
+      }),
+    );
+    handleMarkerEditStop();
+  };
+
+  const handleMarkerMove = (): void => {
+    if (!(markerShowArea && editingMarkerIndex !== undefined)) return;
+    dispatch(
+      areaStartMovingCoordinates({
+        id: markerShowArea.id,
+        coordsIndex: editingMarkerIndex,
+      }),
+    );
+    handleMarkerEditStop();
+  };
+
+  const handleMarkerMoveCancel = (): void => {
+    dispatch(areaStopMovingCoordinates());
   };
 
   const handleMapEvent: MapEventListener = (e, coords) => {
-    if (e.type === 'map-click' && coords)
+    // @ts-ignore
+    if (e.type === 'marker-click') {
+      dispatch(
+        startEditingMarker({
+          // eslint-disable-next-line no-underscore-dangle
+          lng: e.target._coords.x,
+          // eslint-disable-next-line no-underscore-dangle
+          lat: e.target._coords.y,
+        }),
+      );
+    }
+    if (e.type === 'map-click' && coords) {
+      dispatch(
+        areaMoveCoordinates({
+          coords: { lng: coords.x, lat: coords.y },
+        }),
+      );
       dispatch(
         addAreaCoordinates({ coords: { lng: coords.x, lat: coords.y } }),
       );
+    }
   };
 
-  const editingArea = areas.find(a => a.id === editingAreaId);
   return (
     <>
       <Map
         areas={areas}
         editingArea={editingArea}
+        markerShowArea={markerShowArea}
         onMapEvent={handleMapEvent}
       />
       <AddAreaModal open={state.addAreaModal} onClose={handleAddAreaClose} />
+      <EditMarkerModal
+        open={editingMarkerIndex !== undefined}
+        onClose={handleMarkerEditStop}
+        onMarkerDelete={handleMarkerDelete}
+        onMarkerMove={handleMarkerMove}
+      />
       <Areas
         areas={areas}
         editingArea={editingArea}
@@ -63,7 +141,24 @@ const AreasIndex: React.FC = () => {
         onAddAreaClose={handleAddAreaClose}
         onAreaEditStart={handleAreaEditStart}
         onAreaEditEnd={handleAreaEditEnd}
+        onMarkersShow={handleMarkerShow}
       />
+      {movingCoords && (
+        <BottomContainer>
+          <div className="card bg-white shadow-2xl p-4 mb-4 flex flex-row items-center">
+            <span className="text-lg pr-2">
+              Přemisťování bodu, klikněte na novou pozici na mapě.
+            </span>
+            <button
+              type="button"
+              className="btn btn-primary btn-sm"
+              onClick={handleMarkerMoveCancel}
+            >
+              Zrušit
+            </button>
+          </div>
+        </BottomContainer>
+      )}
     </>
   );
 };

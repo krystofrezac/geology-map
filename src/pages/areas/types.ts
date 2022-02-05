@@ -6,9 +6,17 @@ export interface AddAreaModalProps {
   onClose: () => void;
 }
 
+export interface EditMarkerModalProps {
+  open: boolean;
+  onClose: () => void;
+  onMarkerDelete: () => void;
+  onMarkerMove: () => void;
+}
+
 export interface MapProps {
   areas: Area[];
   editingArea?: Area;
+  markerShowArea?: Area;
   onMapEvent: MapEventListener;
 }
 
@@ -20,4 +28,5 @@ export interface AreasProps {
   onAddAreaClose: () => void;
   onAreaEditStart: (id: string) => void;
   onAreaEditEnd: () => void;
+  onMarkersShow: (id: string) => void;
 }
