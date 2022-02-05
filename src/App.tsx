@@ -2,12 +2,12 @@ import React from 'react';
 
 import { Route, Routes } from 'react-router-dom';
 
-import AreasIndex from 'pages/areas';
+import EditIndex from 'pages/edit';
 
 const App: React.FC = () => {
   return (
     <Routes>
-      <Route path="/edit" element={<AreasIndex />} />
+      <Route path="/edit" element={<EditIndex />} />
     </Routes>
   );
 };

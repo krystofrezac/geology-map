@@ -12,14 +12,16 @@ export interface Area {
     lng: number;
   }[];
 }
-
+export interface MovingCoords {
+  areaId: string;
+  coordsIndex: number;
+}
 export interface AreasState {
   areas: Area[];
   editingAreaCoords?: string;
   markerShowArea?: string;
-  editingMarkerIndex?: number;
-  movingCoords?: {
-    areaId: string;
-    coordsIndex: number;
-  };
+  editingCoordsIndex?: number;
+  movingCoords?: MovingCoords;
+  addingArea: boolean;
+  editingArea?: string;
 }

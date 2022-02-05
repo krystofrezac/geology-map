@@ -3,9 +3,9 @@ import React, { ChangeEvent, useEffect, useState } from 'react';
 import { ColorInput, TextInput } from 'components/input';
 import ModalIndex from 'components/modal';
 
-import { AddAreaModalProps } from './types';
+import { EditAreaModalProps } from './types';
 
-const AddAreaModal: React.FC<AddAreaModalProps> = props => {
+const EditAreaModal: React.FC<EditAreaModalProps> = props => {
   const [state, setState] = useState({ name: '', color: '#000000' });
 
   useEffect(() => {
@@ -26,7 +26,7 @@ const AddAreaModal: React.FC<AddAreaModalProps> = props => {
   const handleAdd = (): void => {
     if (state.name.length === 0) return;
 
-    props.onAreaAdd(state);
+    props.onAreaEdit(state);
     setState(prevState => ({ ...prevState, name: '', color: '#000000' }));
     props.onClose();
   };
@@ -76,4 +76,4 @@ const AddAreaModal: React.FC<AddAreaModalProps> = props => {
   );
 };
 
-export default AddAreaModal;
+export default EditAreaModal;

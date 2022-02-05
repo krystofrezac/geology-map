@@ -4,10 +4,18 @@ import { Area, AreasState, Coords } from './types/areas';
 
 const initialState: AreasState = {
   areas: [],
+  // id of area where markers are added
   editingAreaCoords: undefined,
+  // id of area where all markers are shown on map
   markerShowArea: undefined,
-  editingMarkerIndex: undefined,
+  // id of coords in `markerShowArea` that is being edited (modal is open)
+  editingCoordsIndex: undefined,
+  // coords that are changing position
   movingCoords: undefined,
+  // is open add modal
+  addingArea: false,
+  // is open edit modal
+  editingArea: undefined,
 };
 
 export const findArea = (
@@ -41,9 +49,10 @@ const areasSlice = createSlice({
       area.name = name;
       area.color = color;
     },
-    startEditingAreaCoords(state, action: PayloadAction<{ id: string }>) {
-      state.editingAreaCoords = action.payload.id;
+    startEditingAreaCoords(state, action: PayloadAction<{ areaId: string }>) {
+      state.editingAreaCoords = action.payload.areaId;
       state.markerShowArea = undefined;
+      state.movingCoords = undefined;
     },
     stopEditingAreaCoords(state) {
       state.editingAreaCoords = undefined;
@@ -52,22 +61,24 @@ const areasSlice = createSlice({
       const area = findArea(state.areas, state.editingAreaCoords);
       area?.coords.push(action.payload.coords);
     },
-    showAreaMarkers(state, action: PayloadAction<{ id: string }>) {
-      state.markerShowArea = action.payload.id;
+    showAreaMarkers(state, action: PayloadAction<{ areaId: string }>) {
+      state.markerShowArea = action.payload.areaId;
       state.editingAreaCoords = undefined;
     },
 
     hideAreaMarkers(state) {
       state.markerShowArea = undefined;
+      state.movingCoords = undefined;
     },
     deleteAreaCoords(
       state,
-      action: PayloadAction<{ id: string; coordsIndex: number }>,
+      action: PayloadAction<{ areaId: string; coordsIndex: number }>,
     ) {
-      findArea(state.areas, action.payload.id)?.coords.splice(
+      findArea(state.areas, action.payload.areaId)?.coords.splice(
         action.payload.coordsIndex,
         1,
       );
+      state.editingCoordsIndex = undefined;
     },
     startEditingMarker(
       state,
@@ -79,17 +90,18 @@ const areasSlice = createSlice({
         c => c.lng === action.payload.lng && c.lat === action.payload.lat,
       );
       if (areaCoordsIndex === undefined) return;
-      state.editingMarkerIndex = areaCoordsIndex;
+      state.editingCoordsIndex = areaCoordsIndex;
     },
     stopEditingMarker(state) {
-      state.editingMarkerIndex = undefined;
+      state.editingCoordsIndex = undefined;
     },
     areaStartMovingCoordinates(
       state,
-      action: PayloadAction<{ id: string; coordsIndex: number }>,
+      action: PayloadAction<{ areaId: string; coordsIndex: number }>,
     ) {
-      const { id, coordsIndex } = action.payload;
-      state.movingCoords = { areaId: id, coordsIndex };
+      const { areaId, coordsIndex } = action.payload;
+      state.movingCoords = { areaId, coordsIndex };
+      state.editingCoordsIndex = undefined;
     },
     areaStopMovingCoordinates(state) {
       state.movingCoords = undefined;
@@ -106,6 +118,16 @@ const areasSlice = createSlice({
       if (!area) return;
       area.coords[state.movingCoords.coordsIndex] = action.payload.coords;
       state.movingCoords = undefined;
+    },
+    startAddingArea(state) {
+      state.addingArea = true;
+    },
+    startEditingArea(state, action: PayloadAction<{ areaId: string }>) {
+      state.editingArea = action.payload.areaId;
+    },
+    endAddingEditingArea(state) {
+      state.editingArea = undefined;
+      state.addingArea = false;
     },
   },
 });
@@ -124,6 +146,9 @@ export const {
   areaStartMovingCoordinates,
   areaStopMovingCoordinates,
   areaMoveCoordinates,
+  startAddingArea,
+  startEditingArea,
+  endAddingEditingArea,
 } = areasSlice.actions;
 
 export default areasSlice.reducer;

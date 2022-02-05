@@ -14,9 +14,13 @@ const Map: React.FC<MapProps> = props => {
           props.editingAreaCoords?.coords.map(c => (
             <Marker key={`${c.lat}-${c.lng}`} coords={c} />
           ))}
-        {props.markerShowArea?.coords.map(c => (
-          <Marker key={`${c.lat}-${c.lng}`} coords={c} />
-        ))}
+        {props.markerShowArea?.coords.map(
+          (c, index) =>
+            (!props.movingCoords ||
+              index === props.movingCoords.coordsIndex) && (
+              <Marker key={`${c.lat}-${c.lng}`} coords={c} />
+            ),
+        )}
       </MarkerLayer>
       <PathLayer>
         {props.editingAreaCoords && (
