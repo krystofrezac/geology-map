@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
+import { useSelector } from 'store/hooks';
+import { findAreaParent } from 'store/slices/areas';
 import { Area } from 'store/slices/types/areas';
 
 import ModalIndex from 'components/modal';
@@ -12,6 +14,10 @@ const DeleteModal: React.FC<DeleteModalProps> = props => {
     open: boolean;
   }>({ area: undefined, open: false });
 
+  const { areaParent } = useSelector(s => ({
+    areaParent: findAreaParent(s.areas.areas, props.area?.id),
+  }));
+
   // persist last area so when modal is closing there is not undefined in text
   useEffect(() => {
     if (!props.area) {
@@ -21,10 +27,17 @@ const DeleteModal: React.FC<DeleteModalProps> = props => {
     setState(prevState => ({ ...prevState, area: props.area, open: true }));
   }, [props.area]);
 
+  let areaName = state.area?.name;
+  if (areaParent) {
+    const extensionIndex = areaParent.extensions.findIndex(
+      e => e.id === props.area?.id,
+    );
+    areaName = `${areaParent.name} #${extensionIndex + 1}`;
+  }
   return (
     <ModalIndex
       open={state.open}
-      title={`Doopravdy chcete odstranit oblast '${state.area?.name}'`}
+      title={`Doopravdy chcete odstranit oblast '${areaName}'`}
       actions={[
         <button
           key="cancel"
