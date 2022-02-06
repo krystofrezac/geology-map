@@ -244,6 +244,16 @@ const areasSlice = createSlice({
 
       state.editingDeposit = undefined;
     },
+    deleteDeposit(
+      state,
+      action: PayloadAction<{ areaId: string; id: string }>,
+    ) {
+      const { areaId, id } = action.payload;
+      const area = findRootArea(state.areas, areaId);
+      if (!area) return;
+
+      area.deposits = area.deposits.filter(d => d.id !== id);
+    },
   },
 });
 
@@ -270,6 +280,7 @@ export const {
   addDeposit,
   startEditingDeposit,
   editDeposit,
+  deleteDeposit,
 } = areasSlice.actions;
 
 export default areasSlice.reducer;

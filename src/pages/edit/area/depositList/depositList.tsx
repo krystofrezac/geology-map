@@ -29,23 +29,26 @@ const DepositList: React.FC<DepositListProps> = props => (
         <button
           type="button"
           className="btn btn-primary btn-sm ml-auto"
-          onClick={props.onAddDeposit}
+          onClick={props.onDepositAdd}
         >
           Nové naleziště
         </button>
       </div>
       <div />
       {props.area.deposits.map(deposit => (
-        <div className="flex flex-row gap-1 items-center py-2">
+        <div key={deposit.id} className="flex flex-row gap-1 items-center py-2">
           <ColorDotIndex color={deposit.color} />
           <span className="pl-1"> {deposit.name}</span>
 
-          <IconButtonIndex className="btn-error ml-auto">
+          <IconButtonIndex
+            className="btn-error ml-auto"
+            onClick={() => props.onDepositDelete(deposit.id)}
+          >
             <TrashIcon />
           </IconButtonIndex>
           <IconButtonIndex
             className="btn-info"
-            onClick={() => props.onEditDeposit(deposit.id)}
+            onClick={() => props.onDepositEdit(deposit.id)}
           >
             <PencilIcon />
           </IconButtonIndex>
