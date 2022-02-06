@@ -1,11 +1,11 @@
-import { Area, AreaWithExtensions } from 'store/slices/types/areas';
+import { Area, RootArea } from 'store/slices/types/areas';
 
 export interface AreaListIndexState {
   deleteArea?: Area;
 }
 
 export interface AreaListProps {
-  areas: AreaWithExtensions[];
+  areas: RootArea[];
   editingAreaCoords?: Area;
   markerShowArea?: Area;
 
@@ -22,6 +22,7 @@ export interface AreaListItemProps {
   area: Area;
   editingCoords: boolean;
   markerShow: boolean;
+  rootArea: boolean;
 
   onAreaEditCoordsClick: () => void;
   onMarkersShowClick: () => void;

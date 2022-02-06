@@ -3,18 +3,23 @@ export interface Coords {
   lng: number;
 }
 
+export interface Deposit {
+  id: string;
+  name: string;
+  color: string;
+  coords: Coords[];
+}
+
 export interface Area {
   id: string;
   name: string;
   color: string;
-  coords: {
-    lat: number;
-    lng: number;
-  }[];
+  coords: Coords[];
 }
 
-export interface AreaWithExtensions extends Area {
+export interface RootArea extends Area {
   extensions: Area[];
+  deposits: Deposit[];
 }
 
 export interface MovingCoords {
@@ -22,11 +27,12 @@ export interface MovingCoords {
   coordsIndex: number;
 }
 export interface AreasState {
-  areas: AreaWithExtensions[];
+  areas: RootArea[];
   editingAreaCoords?: string;
   markerShowArea?: string;
   editingCoordsIndex?: number;
   movingCoords?: MovingCoords;
   addingArea: boolean;
   editingArea?: string;
+  addingDeposit: boolean;
 }

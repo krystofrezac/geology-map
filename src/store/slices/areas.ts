@@ -1,27 +1,26 @@
 import { createSlice, nanoid, PayloadAction } from '@reduxjs/toolkit';
 
-import { Area, AreasState, AreaWithExtensions, Coords } from './types/areas';
+import { Area, AreasState, Coords, RootArea } from './types/areas';
 
 const initialState: AreasState = {
   areas: [],
   // id of area where markers are added
-  editingAreaCoords: undefined,
-  // id of area where all markers are shown on map
+  editingAreaCoords: undefined, // id of area where all markers are shown on map
   markerShowArea: undefined,
   // id of coords in `markerShowArea` that is being edited (modal is open)
   editingCoordsIndex: undefined,
   // coords that are changing position
   movingCoords: undefined,
-  // is open add modal
+  // is open area add modal
   addingArea: false,
-  // is open edit modal
+  // is open  area edit modal
   editingArea: undefined,
+
+  // is open add deposit modal
+  addingDeposit: false,
 };
 
-export const findArea = (
-  areas: AreaWithExtensions[],
-  id?: string,
-): Area | undefined => {
+export const findArea = (areas: RootArea[], id?: string): Area | undefined => {
   if (!id) return undefined;
   // eslint-disable-next-line no-restricted-syntax
   for (const a of areas) {
@@ -32,17 +31,17 @@ export const findArea = (
   return undefined;
 };
 
-const findRootArea = (
-  areas: AreaWithExtensions[],
+export const findRootArea = (
+  areas: RootArea[],
   id?: string,
-): AreaWithExtensions | undefined => {
+): RootArea | undefined => {
   return areas.find(a => a.id === id);
 };
 
 export const findAreaParent = (
-  areas: AreaWithExtensions[],
+  areas: RootArea[],
   id?: string,
-): AreaWithExtensions | undefined => {
+): RootArea | undefined => {
   if (!id) return undefined;
   // eslint-disable-next-line no-restricted-syntax
   for (const a of areas) {
@@ -68,7 +67,7 @@ const areasSlice = createSlice({
       };
 
       if (!action.payload.extend) {
-        state.areas.push({ ...areaData, extensions: [] });
+        state.areas.push({ ...areaData, extensions: [], deposits: [] });
         return;
       }
 
@@ -98,7 +97,7 @@ const areasSlice = createSlice({
         areaParent.extensions = areaParent.extensions.filter(
           e => e.id !== area.id,
         );
-        state.areas.push({ ...area, extensions: [] });
+        state.areas.push({ ...area, extensions: [], deposits: [] });
         return;
       }
 
@@ -195,6 +194,21 @@ const areasSlice = createSlice({
       state.editingArea = undefined;
       state.addingArea = false;
     },
+    startAddingDeposit(state) {
+      state.addingDeposit = true;
+    },
+    stopAddingDeposit(state) {
+      state.addingDeposit = false;
+    },
+    addDeposit(
+      state,
+      action: PayloadAction<{ areaId: string; name: string; color: string }>,
+    ) {
+      const area = findRootArea(state.areas, action.payload.areaId);
+      if (!area) return;
+      const { name, color } = action.payload;
+      area.deposits.push({ id: nanoid(), name, color, coords: [] });
+    },
   },
 });
 
@@ -216,6 +230,9 @@ export const {
   startAddingArea,
   startEditingArea,
   endAddingEditingArea,
+  startAddingDeposit,
+  stopAddingDeposit,
+  addDeposit,
 } = areasSlice.actions;
 
 export default areasSlice.reducer;

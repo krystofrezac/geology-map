@@ -1,7 +1,7 @@
 import React from 'react';
 
 import ContentContainerIndex from 'components/contentContainer';
-import SideCardIndex from 'components/sideCard';
+import SideCardIndex, { SideCardTitle } from 'components/sideCard';
 
 import AreaListItem from './area';
 import { AreaListProps } from './types';
@@ -27,7 +27,7 @@ const AreaList: React.FC<AreaListProps> = props => {
     <ContentContainerIndex>
       <SideCardIndex>
         <div className="flex">
-          <h2 className="card-title">Oblasti</h2>
+          <SideCardTitle>Oblasti</SideCardTitle>
           <button
             type="button"
             className="btn btn-sm btn-primary ml-auto"
@@ -42,6 +42,7 @@ const AreaList: React.FC<AreaListProps> = props => {
             area={area}
             editingCoords={props.editingAreaCoords?.id === area.id}
             markerShow={props.markerShowArea?.id === area.id}
+            rootArea
             onAreaEditCoordsClick={() => handleAreaEditCoordsClick(area.id)}
             onMarkersShowClick={() => handleMarkersShowClick(area.id)}
             onAreaEdit={() => props.onAreaEdit(area.id)}
@@ -57,6 +58,7 @@ const AreaList: React.FC<AreaListProps> = props => {
               }}
               editingCoords={props.editingAreaCoords?.id === extension.id}
               markerShow={props.markerShowArea?.id === extension.id}
+              rootArea={false}
               onAreaEditCoordsClick={() =>
                 handleAreaEditCoordsClick(extension.id)
               }

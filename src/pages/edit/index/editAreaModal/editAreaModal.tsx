@@ -80,7 +80,7 @@ const EditAreaModal: React.FC<EditAreaModalProps> = props => {
         </button>,
         <button
           key="add"
-          type="button"
+          type="submit"
           className="btn btn-primary"
           onClick={handleAdd}
         >

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
-import ModalIndex from 'components/modal';
+import { Area } from 'store/slices/types/areas';
 
-import { Area } from '../../../store/slices/types/areas';
+import ModalIndex from 'components/modal';
 
 import { DeleteModalProps } from './types';
 

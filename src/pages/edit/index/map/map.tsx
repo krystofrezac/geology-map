@@ -1,11 +1,10 @@
 import React from 'react';
 
 import { Marker, MarkerLayer, PathLayer, Polygon } from 'react-mapycz';
+import { findAreaParent } from 'store/slices/areas';
 import { Area } from 'store/slices/types/areas';
 
 import MapComponent from 'components/map';
-
-import { findAreaParent } from '../../../store/slices/areas';
 
 import { MapProps } from './types';
 
