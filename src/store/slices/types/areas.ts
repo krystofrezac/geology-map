@@ -12,12 +12,17 @@ export interface Area {
     lng: number;
   }[];
 }
+
+export interface AreaWithExtensions extends Area {
+  extensions: Area[];
+}
+
 export interface MovingCoords {
   areaId: string;
   coordsIndex: number;
 }
 export interface AreasState {
-  areas: Area[];
+  areas: AreaWithExtensions[];
   editingAreaCoords?: string;
   markerShowArea?: string;
   editingCoordsIndex?: number;

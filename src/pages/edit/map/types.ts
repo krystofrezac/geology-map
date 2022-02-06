@@ -1,8 +1,12 @@
 import { MapEventListener } from 'react-mapycz';
-import { Area, MovingCoords } from 'store/slices/types/areas';
+import {
+  Area,
+  AreaWithExtensions,
+  MovingCoords,
+} from 'store/slices/types/areas';
 
 export interface MapProps {
-  areas: Area[];
+  areas: AreaWithExtensions[];
   editingAreaCoords?: Area;
   markerShowArea?: Area;
   movingCoords?: MovingCoords;

@@ -1,6 +1,6 @@
 import { createSlice, nanoid, PayloadAction } from '@reduxjs/toolkit';
 
-import { Area, AreasState, Coords } from './types/areas';
+import { Area, AreasState, AreaWithExtensions, Coords } from './types/areas';
 
 const initialState: AreasState = {
   areas: [],
@@ -19,28 +19,71 @@ const initialState: AreasState = {
 };
 
 export const findArea = (
-  areas: Area[],
-  id: string | undefined,
+  areas: AreaWithExtensions[],
+  id?: string,
 ): Area | undefined => {
   if (!id) return undefined;
+  // eslint-disable-next-line no-restricted-syntax
+  for (const a of areas) {
+    if (a.id === id) return a;
+    const extension = a.extensions.find(e => e.id === id);
+    if (extension) return extension;
+  }
+  return undefined;
+};
+
+const findRootArea = (
+  areas: AreaWithExtensions[],
+  id?: string,
+): AreaWithExtensions | undefined => {
   return areas.find(a => a.id === id);
+};
+
+export const findAreaParent = (
+  areas: AreaWithExtensions[],
+  id?: string,
+): AreaWithExtensions | undefined => {
+  if (!id) return undefined;
+  // eslint-disable-next-line no-restricted-syntax
+  for (const a of areas) {
+    const extension = a.extensions.find(e => e.id === id);
+    if (extension) return a;
+  }
+  return undefined;
 };
 
 const areasSlice = createSlice({
   name: 'areas',
   initialState,
   reducers: {
-    addArea(state, action: PayloadAction<{ name: string; color: string }>) {
-      state.areas.push({
+    addArea(
+      state,
+      action: PayloadAction<{ name: string; color: string; extend?: string }>,
+    ) {
+      const areaData = {
         id: nanoid(),
         name: action.payload.name,
         color: action.payload.color,
         coords: [],
-      });
+      };
+
+      if (!action.payload.extend) {
+        state.areas.push({ ...areaData, extensions: [] });
+        return;
+      }
+
+      const parentArea = findRootArea(state.areas, action.payload.extend);
+      if (!parentArea) return;
+      parentArea.extensions.push(areaData);
     },
     editArea(
       state,
-      action: PayloadAction<{ id: string; name: string; color: string }>,
+      action: PayloadAction<{
+        id: string;
+        name: string;
+        color: string;
+        extend?: string;
+      }>,
     ) {
       const area = findArea(state.areas, action.payload.id);
       if (!area) return;
@@ -48,6 +91,23 @@ const areasSlice = createSlice({
       const { name, color } = action.payload;
       area.name = name;
       area.color = color;
+
+      let areaParent = findAreaParent(state.areas, area.id);
+      // If area is moved from children to root
+      if (areaParent && action.payload.extend === undefined) {
+        areaParent.extensions = areaParent.extensions.filter(
+          e => e.id !== area.id,
+        );
+        state.areas.push({ ...area, extensions: [] });
+        return;
+      }
+
+      // If area is move from root to children
+      if (!areaParent && action.payload.extend !== undefined) {
+        state.areas = state.areas.filter(a => a.id !== area.id);
+        areaParent = findRootArea(state.areas, action.payload.extend);
+        areaParent?.extensions.push(area);
+      }
     },
     deleteArea(state, action: PayloadAction<{ id: string }>) {
       const areaIndex = state.areas.findIndex(

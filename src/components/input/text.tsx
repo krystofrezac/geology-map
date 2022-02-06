@@ -1,12 +1,12 @@
 import React from 'react';
 
-import newID from 'utils/newID';
+import { useId } from 'utils/newID';
 
 import InputBase from './base';
 import { InputProps } from './types';
 
 const InputText: React.FC<InputProps> = ({ label, ...rest }) => {
-  const id = newID();
+  const id = useId();
   return (
     <InputBase label={label} inputId={id}>
       <input id={id} type="text" className="input input-bordered" {...rest} />

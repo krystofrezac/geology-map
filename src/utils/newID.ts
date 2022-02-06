@@ -1,8 +1,13 @@
+import { useState } from 'react';
+
 let lastId = 0;
 
-const newID = (prefix = 'id'): string => {
+export const newID = (prefix = 'id'): string => {
   lastId++;
   return `${prefix}${lastId}`;
 };
 
-export default newID;
+export const useId = (): string => {
+  const [id] = useState(newID());
+  return id;
+};
