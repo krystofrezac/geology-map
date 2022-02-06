@@ -1,4 +1,4 @@
-import { RootArea } from 'store/slices/types/areas';
+import { Deposit, RootArea } from 'store/slices/types/areas';
 
 export interface EditDepositModalIndexProps {
   area: RootArea;
@@ -11,7 +11,8 @@ export interface EditValues {
 
 export interface EditDepositModalProps {
   open: boolean;
+  deposit?: Deposit;
 
   onClose: () => void;
-  onAdd: (values: EditValues) => void;
+  onSubmit: (values: EditValues) => void;
 }

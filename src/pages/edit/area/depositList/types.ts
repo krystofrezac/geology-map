@@ -8,4 +8,5 @@ export interface DepositListProps {
   area: RootArea;
 
   onAddDeposit: () => void;
+  onEditDeposit: (id: string) => void;
 }

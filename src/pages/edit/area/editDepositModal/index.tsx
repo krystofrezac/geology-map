@@ -1,30 +1,47 @@
 import React from 'react';
 
 import { useDispatch, useSelector } from 'store/hooks';
-import { addDeposit, stopAddingDeposit } from 'store/slices/areas';
+import {
+  addDeposit,
+  editDeposit,
+  findDeposit,
+  stopAddingEditingDeposit,
+} from 'store/slices/areas';
 
 import EditDepositModal from './editDepositModal';
 import { EditDepositModalIndexProps, EditValues } from './types';
 
 const EditDepositModalIndex: React.FC<EditDepositModalIndexProps> = props => {
-  const { addingDeposit } = useSelector(state => ({
+  const { addingDeposit, editingDeposit } = useSelector(state => ({
     addingDeposit: state.areas.addingDeposit,
+    editingDeposit: findDeposit(props.area, state.areas.editingDeposit),
   }));
   const dispatch = useDispatch();
 
   const handleClose = (): void => {
-    dispatch(stopAddingDeposit());
+    dispatch(stopAddingEditingDeposit());
   };
 
-  const handleAdd = (values: EditValues): void => {
+  const handleSubmit = (values: EditValues): void => {
+    if (editingDeposit) {
+      dispatch(
+        editDeposit({
+          areaId: props.area.id,
+          id: editingDeposit.id,
+          ...values,
+        }),
+      );
+      return;
+    }
     dispatch(addDeposit({ ...values, areaId: props.area.id }));
   };
 
   return (
     <EditDepositModal
-      open={addingDeposit}
+      open={addingDeposit || editingDeposit !== undefined}
+      deposit={editingDeposit}
       onClose={handleClose}
-      onAdd={handleAdd}
+      onSubmit={handleSubmit}
     />
   );
 };

@@ -1,6 +1,6 @@
 import { createSlice, nanoid, PayloadAction } from '@reduxjs/toolkit';
 
-import { Area, AreasState, Coords, RootArea } from './types/areas';
+import { Area, AreasState, Coords, Deposit, RootArea } from './types/areas';
 
 const initialState: AreasState = {
   areas: [],
@@ -13,11 +13,13 @@ const initialState: AreasState = {
   movingCoords: undefined,
   // is open area add modal
   addingArea: false,
-  // is open  area edit modal
+  // id of area that is being edited
   editingArea: undefined,
 
   // is open add deposit modal
   addingDeposit: false,
+  // id of deposit that is being edited
+  editingDeposit: undefined,
 };
 
 export const findArea = (areas: RootArea[], id?: string): Area | undefined => {
@@ -49,6 +51,13 @@ export const findAreaParent = (
     if (extension) return a;
   }
   return undefined;
+};
+
+export const findDeposit = (
+  area: RootArea,
+  depositId?: string,
+): Deposit | undefined => {
+  return area.deposits.find(d => d.id === depositId);
 };
 
 const areasSlice = createSlice({
@@ -197,8 +206,12 @@ const areasSlice = createSlice({
     startAddingDeposit(state) {
       state.addingDeposit = true;
     },
-    stopAddingDeposit(state) {
+    stopAddingEditingDeposit(state) {
       state.addingDeposit = false;
+      state.editingDeposit = undefined;
+    },
+    startEditingDeposit(state, action: PayloadAction<{ id: string }>) {
+      state.editingDeposit = action.payload.id;
     },
     addDeposit(
       state,
@@ -208,6 +221,28 @@ const areasSlice = createSlice({
       if (!area) return;
       const { name, color } = action.payload;
       area.deposits.push({ id: nanoid(), name, color, coords: [] });
+      state.addingDeposit = false;
+    },
+    editDeposit(
+      state,
+      action: PayloadAction<{
+        areaId: string;
+        id: string;
+        name: string;
+        color: string;
+      }>,
+    ) {
+      const area = findRootArea(state.areas, action.payload.areaId);
+      if (!area) return;
+
+      const deposit = findDeposit(area, action.payload.id);
+      if (!deposit) return;
+
+      const { name, color } = action.payload;
+      deposit.name = name;
+      deposit.color = color;
+
+      state.editingDeposit = undefined;
     },
   },
 });
@@ -231,8 +266,10 @@ export const {
   startEditingArea,
   endAddingEditingArea,
   startAddingDeposit,
-  stopAddingDeposit,
+  stopAddingEditingDeposit,
   addDeposit,
+  startEditingDeposit,
+  editDeposit,
 } = areasSlice.actions;
 
 export default areasSlice.reducer;

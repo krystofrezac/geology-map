@@ -43,7 +43,10 @@ const DepositList: React.FC<DepositListProps> = props => (
           <IconButtonIndex className="btn-error ml-auto">
             <TrashIcon />
           </IconButtonIndex>
-          <IconButtonIndex className="btn-info">
+          <IconButtonIndex
+            className="btn-info"
+            onClick={() => props.onEditDeposit(deposit.id)}
+          >
             <PencilIcon />
           </IconButtonIndex>
           <IconButtonIndex>

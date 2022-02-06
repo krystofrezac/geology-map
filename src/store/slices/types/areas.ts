@@ -35,4 +35,5 @@ export interface AreasState {
   addingArea: boolean;
   editingArea?: string;
   addingDeposit: boolean;
+  editingDeposit?: string;
 }

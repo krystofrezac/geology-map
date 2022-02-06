@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 
 import { ColorInput, TextInput } from 'components/input';
 import ModalIndex from 'components/modal';
@@ -7,6 +7,14 @@ import { EditDepositModalProps } from './types';
 
 const EditDepositModal: React.FC<EditDepositModalProps> = props => {
   const [state, setState] = useState({ name: '', color: '#000000' });
+
+  useEffect(() => {
+    setState(prevState => ({
+      ...prevState,
+      name: props.deposit?.name || '',
+      color: props.deposit?.color || '#000000',
+    }));
+  }, [props.deposit]);
 
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setState(s => ({ ...s, name: e.target.value }));
@@ -19,7 +27,7 @@ const EditDepositModal: React.FC<EditDepositModalProps> = props => {
   const handleAdd = (): void => {
     if (state.name.length === 0) return;
 
-    props.onAdd(state);
+    props.onSubmit(state);
     setState(s => ({ ...s, name: '', color: '' }));
   };
 
@@ -42,7 +50,7 @@ const EditDepositModal: React.FC<EditDepositModalProps> = props => {
           className="btn btn-primary"
           onClick={handleAdd}
         >
-          Přidat naleziště
+          {`${props.deposit ? 'Upravit' : 'Přidat'} naleziště`}
         </button>,
       ]}
     >
