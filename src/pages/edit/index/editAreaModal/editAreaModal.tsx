@@ -15,12 +15,11 @@ const EditAreaModal: React.FC<EditAreaModalProps> = props => {
 
   useEffect(() => {
     const { area } = props;
-    if (!area) return;
 
     setState(prevState => ({
       ...prevState,
-      name: area.name,
-      color: area.color,
+      name: area?.name || '',
+      color: area?.color || '#000000',
       extend: props.extend,
     }));
   }, [props.area]);
