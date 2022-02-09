@@ -75,17 +75,27 @@ const areasSlice = createSlice({
   reducers: {
     addArea(
       state,
-      action: PayloadAction<{ name: string; color: string; extend?: string }>,
+      action: PayloadAction<{
+        name: string;
+        color: string;
+        extend?: string;
+        description: string;
+      }>,
     ) {
       const areaData = {
         id: nanoid(),
         name: action.payload.name,
         color: action.payload.color,
+        description: action.payload.description,
         coords: [],
       };
 
       if (!action.payload.extend) {
-        state.areas.push({ ...areaData, extensions: [], deposits: [] });
+        state.areas.push({
+          ...areaData,
+          extensions: [],
+          deposits: [],
+        });
         return;
       }
 
@@ -100,14 +110,16 @@ const areasSlice = createSlice({
         name: string;
         color: string;
         extend?: string;
+        description: string;
       }>,
     ) {
       const area = findArea(state.areas, action.payload.id);
       if (!area) return;
 
-      const { name, color } = action.payload;
+      const { name, color, description } = action.payload;
       area.name = name;
       area.color = color;
+      area.description = description;
 
       let areaParent = findAreaParent(state.areas, area.id);
       // If area is moved from children to root
@@ -228,12 +240,23 @@ const areasSlice = createSlice({
     },
     addDeposit(
       state,
-      action: PayloadAction<{ areaId: string; name: string; color: string }>,
+      action: PayloadAction<{
+        areaId: string;
+        name: string;
+        color: string;
+        description: string;
+      }>,
     ) {
       const area = findRootArea(state.areas, action.payload.areaId);
       if (!area) return;
-      const { name, color } = action.payload;
-      area.deposits.push({ id: nanoid(), name, color, coords: [] });
+      const { name, color, description } = action.payload;
+      area.deposits.push({
+        id: nanoid(),
+        name,
+        color,
+        coords: [],
+        description,
+      });
       state.addingDeposit = false;
     },
     editDeposit(
@@ -243,6 +266,7 @@ const areasSlice = createSlice({
         id: string;
         name: string;
         color: string;
+        description: string;
       }>,
     ) {
       const area = findRootArea(state.areas, action.payload.areaId);
@@ -251,9 +275,10 @@ const areasSlice = createSlice({
       const deposit = findDeposit(area, action.payload.id);
       if (!deposit) return;
 
-      const { name, color } = action.payload;
+      const { name, color, description } = action.payload;
       deposit.name = name;
       deposit.color = color;
+      deposit.description = description;
 
       state.editingDeposit = undefined;
     },

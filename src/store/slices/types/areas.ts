@@ -7,6 +7,7 @@ export interface Deposit {
   id: string;
   name: string;
   color: string;
+  description: string;
   coords: Coords[];
 }
 
@@ -14,6 +15,7 @@ export interface Area {
   id: string;
   name: string;
   color: string;
+  description: string;
   coords: Coords[];
 }
 

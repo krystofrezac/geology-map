@@ -4,6 +4,7 @@ export interface EditValues {
   name: string;
   color: string;
   extend?: string;
+  description: string;
 }
 export interface EditAreaModalProps {
   open: boolean;
@@ -18,4 +19,5 @@ export interface EditAreaModalState {
   name: string;
   color: string;
   extend?: string;
+  description: string;
 }

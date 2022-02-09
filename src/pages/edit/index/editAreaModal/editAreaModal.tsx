@@ -1,6 +1,9 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 
+import { useId } from 'utils/newID';
+
 import { ColorInput, SelectInput, TextInput } from 'components/input';
+import { MarkdownEditor } from 'components/markdown';
 import ModalIndex from 'components/modal';
 
 import { EditAreaModalProps, EditAreaModalState } from './types';
@@ -11,7 +14,10 @@ const EditAreaModal: React.FC<EditAreaModalProps> = props => {
     name: '',
     color: '#000000',
     extend: undefined,
+    description: '',
   });
+
+  const markdownId = useId();
 
   useEffect(() => {
     const { area } = props;
@@ -21,6 +27,7 @@ const EditAreaModal: React.FC<EditAreaModalProps> = props => {
       name: area?.name || '',
       color: area?.color || '#000000',
       extend: props.extend,
+      description: area?.description || '',
     }));
   }, [props.area]);
 
@@ -55,6 +62,10 @@ const EditAreaModal: React.FC<EditAreaModalProps> = props => {
       ...prevState,
       extend: value === EXTEND_NOTHING ? undefined : value,
     }));
+  };
+
+  const handleDescriptionChange = (value?: string): void => {
+    setState(s => ({ ...s, description: value || '' }));
   };
 
   const extendOptions = [
@@ -104,6 +115,16 @@ const EditAreaModal: React.FC<EditAreaModalProps> = props => {
         value={state.color}
         disabled={state.extend !== undefined}
         onChange={handleColorChange}
+      />
+      {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+      <label className="label" htmlFor={markdownId}>
+        <span className="label-text">Popis</span>
+      </label>
+      <MarkdownEditor
+        value={state.description}
+        onChange={handleDescriptionChange}
+        textareaProps={{ id: markdownId }}
+        height={300}
       />
     </ModalIndex>
   );

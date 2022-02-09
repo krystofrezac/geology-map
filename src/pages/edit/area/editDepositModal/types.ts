@@ -7,6 +7,7 @@ export interface EditDepositModalIndexProps {
 export interface EditValues {
   name: string;
   color: string;
+  description: string;
 }
 
 export interface EditDepositModalProps {
