@@ -1,10 +1,12 @@
 import React from 'react';
 
 import {
+  DownloadIcon,
   ExclamationIcon,
   PencilIcon,
   PresentationChartBarIcon,
   RefreshIcon,
+  UploadIcon,
 } from '@heroicons/react/outline';
 import { Link } from 'react-router-dom';
 
@@ -29,7 +31,15 @@ const Home: React.FC<HomeProps> = props => (
           </button>
         </Link>
       </div>
-      <div className="flex justify-center pt-8">
+      <div className="flex justify-center pt-8 gap-4">
+        <button type="button" className="btn" onClick={props.onDataExport}>
+          <DownloadIcon className="h-6 w-6 mr-2" />
+          Exportovat data
+        </button>
+        <button type="button" className="btn" onClick={props.onDataImport}>
+          <UploadIcon className="h-6 w-6 mr-2" />
+          Importovat data
+        </button>
         <button
           type="button"
           className="btn btn-warning"
@@ -41,7 +51,7 @@ const Home: React.FC<HomeProps> = props => (
       </div>
     </div>
     <BottomContainer>
-      <div className="pb-8">
+      <div className="pb-8 px-8">
         <div className="alert alert-error">
           <div className="flex-1">
             <ExclamationIcon className="h-6 w-6" />

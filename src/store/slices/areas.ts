@@ -1,6 +1,6 @@
 import { createSlice, nanoid, PayloadAction } from '@reduxjs/toolkit';
 
-import resetAction from '../actions/reset';
+import { importData, resetData } from '../actions';
 
 import { Area, AreasState, Coords, Deposit, RootArea } from './types/areas';
 
@@ -378,10 +378,14 @@ const areasSlice = createSlice({
     },
   },
   extraReducers: builder => {
-    builder.addCase(resetAction, state => {
-      state = initialState;
-      return state;
-    });
+    builder
+      .addCase(resetData, state => {
+        state = initialState;
+        return state;
+      })
+      .addCase(importData, (state, action) => {
+        return action.payload.state.areas;
+      });
   },
 });
 

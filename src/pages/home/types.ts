@@ -1,5 +1,7 @@
 export interface HomeProps {
   onDataReset: () => void;
+  onDataExport: () => void;
+  onDataImport: () => void;
 }
 
 export interface ResetDataModalProps {
@@ -7,4 +9,11 @@ export interface ResetDataModalProps {
 
   onCancel: () => void;
   onReset: () => void;
+}
+
+export interface ImportModalProps {
+  open: boolean;
+
+  onCancel: () => void;
+  onImport: (data: Record<string, any>) => void;
 }
