@@ -1,5 +1,7 @@
 import { createSlice, nanoid, PayloadAction } from '@reduxjs/toolkit';
 
+import resetAction from '../actions/reset';
+
 import { Area, AreasState, Coords, Deposit, RootArea } from './types/areas';
 
 const initialState: AreasState = {
@@ -374,6 +376,12 @@ const areasSlice = createSlice({
 
       state.movingEditingDepositCoordsIndex = undefined;
     },
+  },
+  extraReducers: builder => {
+    builder.addCase(resetAction, state => {
+      state = initialState;
+      return state;
+    });
   },
 });
 
