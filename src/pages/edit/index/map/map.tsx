@@ -58,30 +58,55 @@ const Map: React.FC<MapProps> = props => {
     );
   };
 
+  const drawEditingAreaMarkers = (): JSX.Element | undefined => {
+    if (
+      props.editingAreaCoords === undefined ||
+      props.editingAreaCoords.coords.length === 0
+    )
+      return undefined;
+
+    return (
+      <>
+        <Marker coords={props.editingAreaCoords.coords[0]} />
+        {props.editingAreaCoords.coords.length > 1 && (
+          <Marker
+            coords={
+              props.editingAreaCoords.coords[
+                props.editingAreaCoords.coords.length - 1
+              ]
+            }
+          />
+        )}
+      </>
+    );
+  };
+
+  const drawMarkerShowAreaCoords = (): (JSX.Element | false)[] | undefined =>
+    props.markerShowArea?.coords.map(
+      (c, index) =>
+        (!props.movingCoords || index === props.movingCoords.coordsIndex) && (
+          <Marker key={`${c.lat}-${c.lng}`} coords={c} />
+        ),
+    );
+
+  const drawAreas = (): (false | undefined | JSX.Element)[][] =>
+    props.areas.map(area => [
+      drawArea(area),
+      ...area.extensions.map(extension =>
+        drawArea({ ...extension, color: area.color }),
+      ),
+    ]);
+
   return (
     <MapComponent onEvent={props.onMapEvent}>
       <MarkerLayer>
-        {(props.editingAreaCoords?.coords.length || 3) < 3 &&
-          props.editingAreaCoords?.coords.map(c => (
-            <Marker key={`${c.lat}-${c.lng}`} coords={c} />
-          ))}
-        {props.markerShowArea?.coords.map(
-          (c, index) =>
-            (!props.movingCoords ||
-              index === props.movingCoords.coordsIndex) && (
-              <Marker key={`${c.lat}-${c.lng}`} coords={c} />
-            ),
-        )}
+        {drawMarkerShowAreaCoords()}
+        {drawEditingAreaMarkers()}
       </MarkerLayer>
       <PathLayer>
         {drawEditingArea()}
         {drawMarkerShowArea()}
-        {props.areas.map(area => [
-          drawArea(area),
-          ...area.extensions.map(extension =>
-            drawArea({ ...extension, color: area.color }),
-          ),
-        ])}
+        {drawAreas()}
       </PathLayer>
     </MapComponent>
   );
