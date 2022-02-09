@@ -124,7 +124,6 @@ const EditAreaModal: React.FC<EditAreaModalProps> = props => {
         value={state.description}
         onChange={handleDescriptionChange}
         textareaProps={{ id: markdownId }}
-        height={300}
       />
     </ModalIndex>
   );

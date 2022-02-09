@@ -1,4 +1,3 @@
-import { MapEventListener } from 'react-mapycz';
 import { Area, MovingCoords, RootArea } from 'store/slices/types/areas';
 
 export interface MapProps {
@@ -6,5 +5,4 @@ export interface MapProps {
   editingAreaCoords?: Area;
   markerShowArea?: Area;
   movingCoords?: MovingCoords;
-  onMapEvent: MapEventListener;
 }

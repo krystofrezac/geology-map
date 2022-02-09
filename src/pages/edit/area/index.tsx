@@ -8,7 +8,6 @@ import BottomInfoIndex from './bottomInfo';
 import DepositListIndex from './depositList';
 import EditDepositModalIndex from './editDepositModal';
 import EditMarkerModalIndex from './editMarkerModal';
-import MapIndex from './map';
 
 const AreaIndex: React.FC = () => {
   const params = useParams<{ areaId: string }>();
@@ -22,7 +21,6 @@ const AreaIndex: React.FC = () => {
 
   return (
     <>
-      <MapIndex area={area} />
       <DepositListIndex area={area} />
       <EditDepositModalIndex area={area} />
       <EditMarkerModalIndex />

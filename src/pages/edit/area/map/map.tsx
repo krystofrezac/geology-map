@@ -9,8 +9,6 @@ import {
 } from 'react-mapycz';
 import { Area, Deposit } from 'store/slices/types/areas';
 
-import MapIndex from 'components/map';
-
 import { MapProps } from './types';
 
 const getAreaPolygon = (area: Area): JSX.Element => (
@@ -100,7 +98,7 @@ const Map: React.FC<MapProps> = props => {
     ));
 
   return (
-    <MapIndex onEvent={props.onEvent}>
+    <>
       <MarkerLayer>
         {drawEditingDepositCoordsMarkers()}
         {drawMarkersShowDepositMarkers()}
@@ -111,7 +109,7 @@ const Map: React.FC<MapProps> = props => {
         {drawMarkerShowDeposit()}
         {drawDeposits()}
       </PathLayer>
-    </MapIndex>
+    </>
   );
 };
 

@@ -4,8 +4,6 @@ import { Marker, MarkerLayer, PathLayer, Polygon } from 'react-mapycz';
 import { findAreaParent } from 'store/slices/areas';
 import { Area } from 'store/slices/types/areas';
 
-import MapComponent from 'components/map';
-
 import { MapProps } from './types';
 
 const Map: React.FC<MapProps> = props => {
@@ -98,7 +96,7 @@ const Map: React.FC<MapProps> = props => {
     ]);
 
   return (
-    <MapComponent onEvent={props.onMapEvent}>
+    <>
       <MarkerLayer>
         {drawMarkerShowAreaCoords()}
         {drawEditingAreaMarkers()}
@@ -108,7 +106,7 @@ const Map: React.FC<MapProps> = props => {
         {drawMarkerShowArea()}
         {drawAreas()}
       </PathLayer>
-    </MapComponent>
+    </>
   );
 };
 

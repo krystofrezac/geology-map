@@ -83,7 +83,6 @@ const EditDepositModal: React.FC<EditDepositModalProps> = props => {
         value={state.description}
         onChange={handleDescriptionChange}
         textareaProps={{ id: markdownId }}
-        height={300}
       />
     </ModalIndex>
   );

@@ -1,65 +1,31 @@
 import React from 'react';
 
-import { MapEventListener } from 'react-mapycz';
-import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import { useSelector } from 'store/hooks';
-import {
-  addDepositCoords,
-  findDeposit,
-  moveEditingDepositMarker,
-  startEditingDepositMarker,
-} from 'store/slices/areas';
+import { findDeposit, findRootArea } from 'store/slices/areas';
 
 import Map from './map';
-import { MapIndexProps } from './types';
 
-const MapIndex: React.FC<MapIndexProps> = props => {
-  const { editingDepositCoords, markerShowDeposit } = useSelector(state => ({
-    editingDepositCoords: findDeposit(
-      props.area,
-      state.areas.editingDepositCoords?.depositId,
-    ),
-    markerShowDeposit: findDeposit(
-      props.area,
-      state.areas.markerShowDeposit?.depositId,
-    ),
+const MapIndex: React.FC = () => {
+  const params = useParams<{ areaId: string }>();
+  const { areaId } = params;
+  const { area } = useSelector(state => ({
+    area: findRootArea(state.areas.areas, areaId),
   }));
-  const dispatch = useDispatch();
 
-  const handleMapEvent: MapEventListener = (event, coords): void => {
-    // @ts-ignore
-    if (event.type === 'marker-click') {
-      dispatch(
-        startEditingDepositMarker({
-          coords: {
-            // eslint-disable-next-line no-underscore-dangle
-            lng: event.target._coords.x,
-            // eslint-disable-next-line no-underscore-dangle
-            lat: event.target._coords.y,
-          },
-        }),
-      );
-    }
-    if (event.type === 'map-click') {
-      dispatch(
-        addDepositCoords({
-          coords: { lng: coords.x, lat: coords.y },
-        }),
-      );
-      dispatch(
-        moveEditingDepositMarker({
-          coords: { lng: coords.x, lat: coords.y },
-        }),
-      );
-    }
-  };
+  const { editingDepositCoords, markerShowDeposit } = useSelector(state => ({
+    editingDepositCoords:
+      area && findDeposit(area, state.areas.editingDepositCoords?.depositId),
+    markerShowDeposit:
+      area && findDeposit(area, state.areas.markerShowDeposit?.depositId),
+  }));
 
+  if (!area) return <div>Tato oblast neexistuje</div>;
   return (
     <Map
-      area={props.area}
+      area={area}
       editingDepositCoords={editingDepositCoords}
       markerShowDeposit={markerShowDeposit}
-      onEvent={handleMapEvent}
     />
   );
 };

@@ -3,7 +3,7 @@ import React from 'react';
 import MDEditor, { MDEditorProps } from '@uiw/react-md-editor';
 
 export const MarkdownEditor: React.FC<MDEditorProps> = props => (
-  <MDEditor {...props} />
+  <MDEditor height={200} {...props} />
 );
 
 const MarkdownPreview: React.FC<{ source: string }> = props => (
