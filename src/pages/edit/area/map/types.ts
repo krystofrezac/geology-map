@@ -8,6 +8,7 @@ export interface MapIndexProps {
 export interface MapProps {
   area: RootArea;
   editingDepositCoords?: Deposit;
+  markerShowDeposit?: Deposit;
 
   onEvent: MapEventListener;
 }

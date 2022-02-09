@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'store/hooks';
 import {
   deleteDeposit,
   findDeposit,
+  hideDepositMarkers,
+  showDepositMarkers,
   startAddingDeposit,
   startEditingDeposit,
   startEditingDepositCoords,
@@ -18,8 +20,9 @@ const DepositListIndex: React.FC<DepositListIndexProps> = props => {
   const [state, setState] = useState<DepositListIndexState>({
     deletingDeposit: undefined,
   });
-  const { editingDepositCoords } = useSelector(s => ({
+  const { editingDepositCoords, markerShowDeposit } = useSelector(s => ({
     editingDepositCoords: s.areas.editingDepositCoords,
+    markerShowDeposit: s.areas.markerShowDeposit,
   }));
   const dispatch = useDispatch();
 
@@ -59,15 +62,25 @@ const DepositListIndex: React.FC<DepositListIndexProps> = props => {
     );
   };
 
+  const handleDepositMarkersShow = (id: string): void => {
+    if (id === markerShowDeposit?.depositId) {
+      dispatch(hideDepositMarkers());
+      return;
+    }
+    dispatch(showDepositMarkers({ areaId: props.area.id, depositId: id }));
+  };
+
   return (
     <>
       <DepositList
         area={props.area}
         editingDepositCoords={editingDepositCoords?.depositId}
+        markersShowDeposit={markerShowDeposit?.depositId}
         onDepositAdd={handleDepositAdd}
         onDepositEdit={handleDepositEdit}
         onDepositDelete={handleDepositDelete}
         onDepositCoordsEdit={handleDepositCoordsEdit}
+        onDepositMarkersShow={handleDepositMarkersShow}
       />
       <DeleteModal
         deposit={state.deletingDeposit}

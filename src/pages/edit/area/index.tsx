@@ -6,6 +6,7 @@ import { findRootArea } from 'store/slices/areas';
 
 import DepositListIndex from './depositList';
 import EditDepositModalIndex from './editDepositModal';
+import EditMarkerModalIndex from './editMarkerModal';
 import MapIndex from './map';
 
 const AreaIndex: React.FC = () => {
@@ -23,6 +24,7 @@ const AreaIndex: React.FC = () => {
       <MapIndex area={area} />
       <DepositListIndex area={area} />
       <EditDepositModalIndex area={area} />
+      <EditMarkerModalIndex />
     </>
   );
 };

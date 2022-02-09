@@ -21,8 +21,14 @@ const initialState: AreasState = {
   addingDeposit: false,
   // id of deposit that is being edited
   editingDeposit: undefined,
-  // id of deposit where markers are added
+  // deposit where markers are added
   editingDepositCoords: undefined,
+  // deposit where all marker are displayed on map
+  markerShowDeposit: undefined,
+  // id of deposit coords that is being edited
+  editingDepositCoordsIndex: undefined,
+
+  movingEditingDepositCoordsIndex: undefined,
 };
 
 export const findArea = (areas: RootArea[], id?: string): Area | undefined => {
@@ -263,6 +269,7 @@ const areasSlice = createSlice({
     ) {
       const { areaId, depositId } = action.payload;
       state.editingDepositCoords = { areaId, depositId };
+      state.markerShowDeposit = undefined;
     },
     stopEditingDepositCoords(state) {
       state.editingDepositCoords = undefined;
@@ -275,6 +282,68 @@ const areasSlice = createSlice({
       if (!area) return;
       const deposit = findDeposit(area, state.editingDepositCoords?.depositId);
       deposit?.coords.push(action.payload.coords);
+    },
+    showDepositMarkers(
+      state,
+      action: PayloadAction<{ areaId: string; depositId: string }>,
+    ) {
+      const { areaId, depositId } = action.payload;
+      state.markerShowDeposit = { areaId, depositId };
+      state.editingDepositCoords = undefined;
+    },
+    hideDepositMarkers(state) {
+      state.markerShowDeposit = undefined;
+      state.movingEditingDepositCoordsIndex = undefined;
+      state.editingDepositCoordsIndex = undefined;
+    },
+    startEditingDepositMarker(
+      state,
+      action: PayloadAction<{ coords: Coords }>,
+    ) {
+      const area = findRootArea(state.areas, state.markerShowDeposit?.areaId);
+      if (!area) return;
+      const deposit = findDeposit(area, state.markerShowDeposit?.depositId);
+      const { lat, lng } = action.payload.coords;
+      const markerIndex = deposit?.coords.findIndex(
+        c => c.lat === lat && c.lng === lng,
+      );
+      if (markerIndex === undefined || markerIndex < 0) return;
+      state.editingDepositCoordsIndex = markerIndex;
+    },
+    stopEditingDepositMarker(state) {
+      state.editingDepositCoordsIndex = undefined;
+    },
+    deleteEditingDepositMarker(state) {
+      if (state.editingDepositCoordsIndex === undefined) return;
+
+      const area = findRootArea(state.areas, state.markerShowDeposit?.areaId);
+      if (!area) return;
+      const deposit = findDeposit(area, state.markerShowDeposit?.depositId);
+      if (!deposit) return;
+
+      deposit.coords.splice(state.editingDepositCoordsIndex, 1);
+      state.editingDepositCoordsIndex = undefined;
+    },
+    startMovingEditingDepositMarker(state) {
+      state.movingEditingDepositCoordsIndex = state.editingDepositCoordsIndex;
+      state.editingDepositCoordsIndex = undefined;
+    },
+    stopMovingEditingDepositMarker(state) {
+      state.movingEditingDepositCoordsIndex = undefined;
+    },
+    moveEditingDepositMarker(state, action: PayloadAction<{ coords: Coords }>) {
+      if (state.movingEditingDepositCoordsIndex === undefined) return;
+
+      const area = findRootArea(state.areas, state.markerShowDeposit?.areaId);
+      if (!area) return;
+      const deposit = findDeposit(area, state.markerShowDeposit?.depositId);
+      if (!deposit) return;
+
+      const coords = deposit.coords[state.movingEditingDepositCoordsIndex];
+      coords.lng = action.payload.coords.lng;
+      coords.lat = action.payload.coords.lat;
+
+      state.movingEditingDepositCoordsIndex = undefined;
     },
   },
 });
@@ -306,6 +375,14 @@ export const {
   startEditingDepositCoords,
   stopEditingDepositCoords,
   addDepositCoords,
+  showDepositMarkers,
+  hideDepositMarkers,
+  startEditingDepositMarker,
+  stopEditingDepositMarker,
+  deleteEditingDepositMarker,
+  startMovingEditingDepositMarker,
+  stopMovingEditingDepositMarker,
+  moveEditingDepositMarker,
 } = areasSlice.actions;
 
 export default areasSlice.reducer;

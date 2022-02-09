@@ -37,4 +37,7 @@ export interface AreasState {
   addingDeposit: boolean;
   editingDeposit?: string;
   editingDepositCoords?: { areaId: string; depositId: string };
+  markerShowDeposit?: { areaId: string; depositId: string };
+  editingDepositCoordsIndex?: number;
+  movingEditingDepositCoordsIndex?: number;
 }

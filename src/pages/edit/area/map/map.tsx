@@ -15,6 +15,7 @@ import { MapProps } from './types';
 
 const getAreaPolygon = (area: Area): JSX.Element => (
   <Polygon
+    key={area.id}
     coords={area.coords}
     options={{
       opacity: 0,
@@ -30,6 +31,7 @@ const getDepositPolygon = (
   transparent: boolean = false,
 ): JSX.Element => (
   <Polygon
+    key={deposit.id}
     coords={deposit.coords}
     options={{
       color: deposit.color,
@@ -51,11 +53,22 @@ const Map: React.FC<MapProps> = props => {
   const drawEditingDepositCoords = (): JSX.Element | undefined =>
     props.editingDepositCoords && getDepositPolygon(props.editingDepositCoords);
 
+  const drawMarkerShowDeposit = (): JSX.Element | undefined =>
+    props.markerShowDeposit && getDepositPolygon(props.markerShowDeposit);
+
   const drawDeposits = (): JSX.Element[] =>
     props.area.deposits
-      .filter(deposit => deposit.id !== props.editingDepositCoords?.id)
+      .filter(
+        deposit =>
+          deposit.id !== props.editingDepositCoords?.id &&
+          deposit.id !== props.markerShowDeposit?.id,
+      )
       .map(deposit =>
-        getDepositPolygon(deposit, props.editingDepositCoords !== undefined),
+        getDepositPolygon(
+          deposit,
+          props.editingDepositCoords !== undefined ||
+            props.markerShowDeposit !== undefined,
+        ),
       );
 
   const drawEditingDepositCoordsMarkers = (): undefined | JSX.Element => {
@@ -81,12 +94,21 @@ const Map: React.FC<MapProps> = props => {
     );
   };
 
+  const drawMarkersShowDepositMarkers = (): JSX.Element[] | undefined =>
+    props.markerShowDeposit?.coords.map(coords => (
+      <Marker key={`${coords.lat}-${coords.lng}`} coords={coords} />
+    ));
+
   return (
     <MapIndex onEvent={props.onEvent}>
-      <MarkerLayer>{drawEditingDepositCoordsMarkers()}</MarkerLayer>
+      <MarkerLayer>
+        {drawEditingDepositCoordsMarkers()}
+        {drawMarkersShowDepositMarkers()}
+      </MarkerLayer>
       <PathLayer>
         {drawAreaBorder()}
         {drawEditingDepositCoords()}
+        {drawMarkerShowDeposit()}
         {drawDeposits()}
       </PathLayer>
     </MapIndex>

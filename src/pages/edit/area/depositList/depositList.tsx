@@ -60,7 +60,12 @@ const DepositList: React.FC<DepositListProps> = props => (
           >
             <PlusIcon />
           </IconButtonIndex>
-          <IconButtonIndex>
+          <IconButtonIndex
+            className={
+              props.markersShowDeposit === deposit.id ? 'btn-primary' : ''
+            }
+            onClick={() => props.onDepositMarkersShow(deposit.id)}
+          >
             <LocationMarkerIcon />
           </IconButtonIndex>
         </div>

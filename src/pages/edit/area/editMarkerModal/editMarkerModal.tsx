@@ -7,7 +7,7 @@ import { EditMarkerModalProps } from './types';
 const EditMarkerModal: React.FC<EditMarkerModalProps> = props => (
   <ModalIndex
     open={props.open}
-    title="Bod oblasti"
+    title="Bod naleziště"
     actions={[
       <button
         key="cancel"

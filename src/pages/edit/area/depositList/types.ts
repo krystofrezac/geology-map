@@ -11,11 +11,13 @@ export interface DepositListIndexState {
 export interface DepositListProps {
   area: RootArea;
   editingDepositCoords?: string;
+  markersShowDeposit?: string;
 
   onDepositAdd: () => void;
   onDepositEdit: (id: string) => void;
   onDepositDelete: (id: string) => void;
   onDepositCoordsEdit: (id: string) => void;
+  onDepositMarkersShow: (id: string) => void;
 }
 
 export interface DeleteModalProps {
