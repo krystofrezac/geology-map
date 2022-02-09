@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { useSelector } from 'store/hooks';
 import { findRootArea } from 'store/slices/areas';
 
+import BottomInfoIndex from './bottomInfo';
 import DepositListIndex from './depositList';
 import EditDepositModalIndex from './editDepositModal';
 import EditMarkerModalIndex from './editMarkerModal';
@@ -25,6 +26,7 @@ const AreaIndex: React.FC = () => {
       <DepositListIndex area={area} />
       <EditDepositModalIndex area={area} />
       <EditMarkerModalIndex />
+      <BottomInfoIndex />
     </>
   );
 };
