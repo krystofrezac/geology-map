@@ -52,7 +52,12 @@ const DepositList: React.FC<DepositListProps> = props => (
           >
             <PencilIcon />
           </IconButtonIndex>
-          <IconButtonIndex>
+          <IconButtonIndex
+            className={
+              props.editingDepositCoords === deposit.id ? 'btn-primary' : ''
+            }
+            onClick={() => props.onDepositCoordsEdit(deposit.id)}
+          >
             <PlusIcon />
           </IconButtonIndex>
           <IconButtonIndex>

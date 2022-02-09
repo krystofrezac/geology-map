@@ -36,4 +36,5 @@ export interface AreasState {
   editingArea?: string;
   addingDeposit: boolean;
   editingDeposit?: string;
+  editingDepositCoords?: { areaId: string; depositId: string };
 }

@@ -5,7 +5,8 @@ import { Area, AreasState, Coords, Deposit, RootArea } from './types/areas';
 const initialState: AreasState = {
   areas: [],
   // id of area where markers are added
-  editingAreaCoords: undefined, // id of area where all markers are shown on map
+  editingAreaCoords: undefined,
+  // id of area where all markers are shown on map
   markerShowArea: undefined,
   // id of coords in `markerShowArea` that is being edited (modal is open)
   editingCoordsIndex: undefined,
@@ -20,6 +21,8 @@ const initialState: AreasState = {
   addingDeposit: false,
   // id of deposit that is being edited
   editingDeposit: undefined,
+  // id of deposit where markers are added
+  editingDepositCoords: undefined,
 };
 
 export const findArea = (areas: RootArea[], id?: string): Area | undefined => {
@@ -254,6 +257,25 @@ const areasSlice = createSlice({
 
       area.deposits = area.deposits.filter(d => d.id !== id);
     },
+    startEditingDepositCoords(
+      state,
+      action: PayloadAction<{ areaId: string; depositId: string }>,
+    ) {
+      const { areaId, depositId } = action.payload;
+      state.editingDepositCoords = { areaId, depositId };
+    },
+    stopEditingDepositCoords(state) {
+      state.editingDepositCoords = undefined;
+    },
+    addDepositCoords(state, action: PayloadAction<{ coords: Coords }>) {
+      const area = findRootArea(
+        state.areas,
+        state.editingDepositCoords?.areaId,
+      );
+      if (!area) return;
+      const deposit = findDeposit(area, state.editingDepositCoords?.depositId);
+      deposit?.coords.push(action.payload.coords);
+    },
   },
 });
 
@@ -281,6 +303,9 @@ export const {
   startEditingDeposit,
   editDeposit,
   deleteDeposit,
+  startEditingDepositCoords,
+  stopEditingDepositCoords,
+  addDepositCoords,
 } = areasSlice.actions;
 
 export default areasSlice.reducer;

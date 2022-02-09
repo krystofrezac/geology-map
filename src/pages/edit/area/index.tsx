@@ -20,7 +20,7 @@ const AreaIndex: React.FC = () => {
 
   return (
     <>
-      <MapIndex />
+      <MapIndex area={area} />
       <DepositListIndex area={area} />
       <EditDepositModalIndex area={area} />
     </>

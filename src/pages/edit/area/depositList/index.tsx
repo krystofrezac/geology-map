@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 
-import { useDispatch } from 'store/hooks';
+import { useDispatch, useSelector } from 'store/hooks';
 import {
   deleteDeposit,
   findDeposit,
   startAddingDeposit,
   startEditingDeposit,
+  startEditingDepositCoords,
+  stopEditingDepositCoords,
 } from 'store/slices/areas';
 
 import DeleteModal from './deleteModal';
@@ -16,6 +18,9 @@ const DepositListIndex: React.FC<DepositListIndexProps> = props => {
   const [state, setState] = useState<DepositListIndexState>({
     deletingDeposit: undefined,
   });
+  const { editingDepositCoords } = useSelector(s => ({
+    editingDepositCoords: s.areas.editingDepositCoords,
+  }));
   const dispatch = useDispatch();
 
   const handleDepositAdd = (): void => {
@@ -44,13 +49,25 @@ const DepositListIndex: React.FC<DepositListIndexProps> = props => {
     handleDepositDeleteCancel();
   };
 
+  const handleDepositCoordsEdit = (id: string): void => {
+    if (id === editingDepositCoords?.depositId) {
+      dispatch(stopEditingDepositCoords());
+      return;
+    }
+    dispatch(
+      startEditingDepositCoords({ areaId: props.area.id, depositId: id }),
+    );
+  };
+
   return (
     <>
       <DepositList
         area={props.area}
+        editingDepositCoords={editingDepositCoords?.depositId}
         onDepositAdd={handleDepositAdd}
         onDepositEdit={handleDepositEdit}
         onDepositDelete={handleDepositDelete}
+        onDepositCoordsEdit={handleDepositCoordsEdit}
       />
       <DeleteModal
         deposit={state.deletingDeposit}
