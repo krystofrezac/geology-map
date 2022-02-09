@@ -127,10 +127,14 @@ const areasSlice = createSlice({
       }
     },
     deleteArea(state, action: PayloadAction<{ id: string }>) {
-      const areaIndex = state.areas.findIndex(
-        area => area.id === action.payload.id,
-      );
-      state.areas.splice(areaIndex, 1);
+      const parentArea = findAreaParent(state.areas, action.payload.id);
+      if (parentArea) {
+        parentArea.extensions = parentArea.extensions.filter(
+          ex => ex.id !== action.payload.id,
+        );
+        return;
+      }
+      state.areas = state.areas.filter(area => area.id !== action.payload.id);
     },
     startEditingAreaCoords(state, action: PayloadAction<{ areaId: string }>) {
       state.editingAreaCoords = action.payload.areaId;
