@@ -123,7 +123,7 @@ const EditAreaModal: React.FC<EditAreaModalProps> = props => {
       <MarkdownEditor
         value={state.description}
         onChange={handleDescriptionChange}
-        textareaProps={{ id: markdownId }}
+        textareaProps={{ id: markdownId, disabled: state.extend !== undefined }}
       />
     </ModalIndex>
   );

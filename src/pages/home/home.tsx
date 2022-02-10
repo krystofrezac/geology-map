@@ -18,7 +18,7 @@ const Home: React.FC<HomeProps> = props => (
   <>
     <div className="flex flex-col justify-center h-screen">
       <div className="flex gap-4 justify-center">
-        <Link to="/">
+        <Link to="/presentation">
           <button type="button" className="btn btn-primary btn-lg">
             <PresentationChartBarIcon className="mr-2 w-6 h-6" />
             Prezentace

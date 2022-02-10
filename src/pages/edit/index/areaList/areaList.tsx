@@ -3,7 +3,7 @@ import React from 'react';
 import ContentContainerIndex from 'components/contentContainer';
 import SideCardIndex, { SideCardTitle } from 'components/sideCard';
 
-import AreaListItem from './area';
+import AreaListItem from './areaListItem';
 import { AreaListProps } from './types';
 
 const AreaList: React.FC<AreaListProps> = props => {
