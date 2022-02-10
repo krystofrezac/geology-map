@@ -7,6 +7,7 @@ module.exports = {
     'plugin:react/recommended',
     'airbnb',
     'plugin:prettier/recommended',
+    'plugin:tailwindcss/recommended',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -16,7 +17,7 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  plugins: ['react', '@typescript-eslint', 'simple-import-sort'],
+  plugins: ['react', '@typescript-eslint', 'simple-import-sort', 'tailwindcss'],
   settings: {
     'import/resolver': {
       typescript: {
@@ -84,5 +85,6 @@ module.exports = {
       },
     ],
     'simple-import-sort/exports': 'error',
+    'tailwindcss/no-custom-classname': 'off',
   },
 };

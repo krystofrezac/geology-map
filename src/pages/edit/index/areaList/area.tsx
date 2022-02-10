@@ -15,13 +15,13 @@ import IconButtonIndex from 'components/iconButton';
 import { AreaListItemProps } from './types';
 
 const AreaListItem: React.FC<AreaListItemProps> = props => (
-  <div className="flex py-2 gap-1">
+  <div className="flex gap-1 py-2">
     <div className="flex flex-row items-center">
       <ColorDotIndex color={props.area.color} />
       <span className="pl-2"> {props.area.name}</span>
     </div>
     <IconButtonIndex
-      className="btn-error ml-auto"
+      className="ml-auto btn-error"
       onClick={() => props.onAreaDelete()}
     >
       <TrashIcon />

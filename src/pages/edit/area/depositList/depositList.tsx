@@ -28,7 +28,7 @@ const DepositList: React.FC<DepositListProps> = props => (
         <SideCardTitle>{props.area.name}</SideCardTitle>
         <button
           type="button"
-          className="btn btn-primary btn-sm ml-auto"
+          className="ml-auto btn btn-primary btn-sm"
           onClick={props.onDepositAdd}
         >
           Nové naleziště
@@ -41,7 +41,7 @@ const DepositList: React.FC<DepositListProps> = props => (
           <span className="pl-1"> {deposit.name}</span>
 
           <IconButtonIndex
-            className="btn-error ml-auto"
+            className="ml-auto btn-error"
             onClick={() => props.onDepositDelete(deposit.id)}
           >
             <TrashIcon />

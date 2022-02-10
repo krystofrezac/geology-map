@@ -30,7 +30,7 @@ const AreaList: React.FC<AreaListProps> = props => {
           <SideCardTitle>Oblasti</SideCardTitle>
           <button
             type="button"
-            className="btn btn-sm btn-primary ml-auto"
+            className="ml-auto btn btn-sm btn-primary"
             onClick={props.onAddAreaOpen}
           >
             Nová oblast

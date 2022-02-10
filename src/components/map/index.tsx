@@ -14,7 +14,7 @@ const MapIndex: React.FC<MapProps> = props => (
     height="100vh"
     zoom={7}
     loadingElement={
-      <div className="flex h-screen items-center justify-center">
+      <div className="flex justify-center items-center h-screen">
         Načítají se data
       </div>
     }

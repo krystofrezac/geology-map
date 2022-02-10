@@ -12,7 +12,7 @@ const ColorInput: React.FC<InputProps> = ({ label, ...rest }) => {
       <input
         id={id}
         type="color"
-        className="input input-bordered w-20"
+        className="w-20 input input-bordered"
         {...rest}
       />
     </InputBase>

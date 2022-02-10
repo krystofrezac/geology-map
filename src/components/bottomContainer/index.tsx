@@ -1,7 +1,7 @@
 import React from 'react';
 
 const BottomContainer: React.FC = props => (
-  <div className="fixed bottom-0 w-screen flex justify-center z-10">
+  <div className="flex fixed bottom-0 z-10 justify-center w-screen">
     {props.children}
   </div>
 );

@@ -8,8 +8,8 @@ const BottomInfo: React.FC<BottomInfoProps> = props => {
   if (props.editingCoords) {
     return (
       <BottomContainer>
-        <div className="card bg-white shadow-2xl p-4 mb-4 flex flex-row items-center">
-          <span className="text-lg pr-2">Kliknutím na mapu přídáte bod</span>
+        <div className="flex flex-row items-center p-4 mb-4 bg-white shadow-2xl card">
+          <span className="pr-2 text-lg">Kliknutím na mapu přídáte bod</span>
           <button
             type="button"
             className="btn btn-primary btn-sm"
@@ -24,8 +24,8 @@ const BottomInfo: React.FC<BottomInfoProps> = props => {
   if (props.movingCoords)
     return (
       <BottomContainer>
-        <div className="card bg-white shadow-2xl p-4 mb-4 flex flex-row items-center">
-          <span className="text-lg pr-2">
+        <div className="flex flex-row items-center p-4 mb-4 bg-white shadow-2xl card">
+          <span className="pr-2 text-lg">
             Klikněte na pozici na mapě, kam chcete bod přemístit
           </span>
           <button
@@ -41,8 +41,8 @@ const BottomInfo: React.FC<BottomInfoProps> = props => {
   if (props.showMarkers)
     return (
       <BottomContainer>
-        <div className="card bg-white shadow-2xl p-4 mb-4 flex flex-row items-center">
-          <span className="text-lg pr-2">
+        <div className="flex flex-row items-center p-4 mb-4 bg-white shadow-2xl card">
+          <span className="pr-2 text-lg">
             Kliknutím na bod ho můžete upravit
           </span>
           <button

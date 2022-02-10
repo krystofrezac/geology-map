@@ -16,28 +16,28 @@ import { HomeProps } from './types';
 
 const Home: React.FC<HomeProps> = props => (
   <>
-    <div className="h-screen flex flex-col justify-center">
-      <div className="flex justify-center gap-4">
+    <div className="flex flex-col justify-center h-screen">
+      <div className="flex gap-4 justify-center">
         <Link to="/">
           <button type="button" className="btn btn-primary btn-lg">
-            <PresentationChartBarIcon className="h-6 w-6 mr-2" />
+            <PresentationChartBarIcon className="mr-2 w-6 h-6" />
             Prezentace
           </button>
         </Link>
         <Link to="/edit">
           <button type="button" className="btn btn-secondary btn-lg">
-            <PencilIcon className="h-6 w-6 mr-2" />
+            <PencilIcon className="mr-2 w-6 h-6" />
             Editace
           </button>
         </Link>
       </div>
-      <div className="flex justify-center pt-8 gap-4">
+      <div className="flex gap-4 justify-center pt-8">
         <button type="button" className="btn" onClick={props.onDataExport}>
-          <DownloadIcon className="h-6 w-6 mr-2" />
+          <DownloadIcon className="mr-2 w-6 h-6" />
           Exportovat data
         </button>
         <button type="button" className="btn" onClick={props.onDataImport}>
-          <UploadIcon className="h-6 w-6 mr-2" />
+          <UploadIcon className="mr-2 w-6 h-6" />
           Importovat data
         </button>
         <button
@@ -45,16 +45,16 @@ const Home: React.FC<HomeProps> = props => (
           className="btn btn-warning"
           onClick={props.onDataReset}
         >
-          <RefreshIcon className="h-6 w-6 mr-2" />
+          <RefreshIcon className="mr-2 w-6 h-6" />
           Resetovat data
         </button>
       </div>
     </div>
     <BottomContainer>
-      <div className="pb-8 px-8">
+      <div className="px-8 pb-8">
         <div className="alert alert-error">
           <div className="flex-1">
-            <ExclamationIcon className="h-6 w-6" />
+            <ExclamationIcon className="w-6 h-6" />
             <span className="mx-3">
               Pokud aplikace nefunguje (nezobrazují se data nebo se zobrazuje
               pouze bíla obrazovka) jsou data nejspíše poškozená. Pro opravu
