@@ -1,12 +1,6 @@
 import React from 'react';
 
-import {
-  LineStyle,
-  Marker,
-  MarkerLayer,
-  PathLayer,
-  Polygon,
-} from 'react-mapycz';
+import { Marker, MarkerLayer, PathLayer, Polygon } from 'react-mapycz';
 import { Area, Deposit } from 'store/slices/types/areas';
 
 import { MapProps } from './types';
@@ -19,7 +13,6 @@ const getAreaPolygon = (area: Area): JSX.Element => (
       opacity: 0,
       outlineColor: area.color,
       outlineOpacity: 0.5,
-      outlineStyle: LineStyle.dot,
     }}
   />
 );

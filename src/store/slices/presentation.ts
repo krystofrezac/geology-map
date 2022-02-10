@@ -1,9 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+import { resetData } from '../actions';
+
 import { PresentationState } from './types/presentation';
 
 const initialState: PresentationState = {
   detailArea: undefined,
+  detailDeposit: undefined,
 };
 
 const presentationSlice = createSlice({
@@ -16,9 +19,26 @@ const presentationSlice = createSlice({
     closeDetailArea(state) {
       state.detailArea = undefined;
     },
+    openDetailDeposit(state, action: PayloadAction<{ depositId: string }>) {
+      state.detailDeposit = action.payload.depositId;
+    },
+    closeDetailDeposit(state) {
+      state.detailDeposit = undefined;
+    },
+  },
+  extraReducers: builder => {
+    builder.addCase(resetData, state => {
+      state = initialState;
+      return state;
+    });
   },
 });
 
-export const { openDetailArea, closeDetailArea } = presentationSlice.actions;
+export const {
+  openDetailArea,
+  closeDetailArea,
+  openDetailDeposit,
+  closeDetailDeposit,
+} = presentationSlice.actions;
 
 export default presentationSlice.reducer;

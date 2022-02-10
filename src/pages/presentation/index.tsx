@@ -6,6 +6,7 @@ import { Link, Route, Routes } from 'react-router-dom';
 import IconButtonIndex from 'components/iconButton';
 
 import Presentation from './index/index';
+import AreaIndex from './area';
 import MapIndex from './map';
 
 const PresentationIndex: React.FC = () => (
@@ -20,6 +21,7 @@ const PresentationIndex: React.FC = () => (
     <MapIndex />
     <Routes>
       <Route path="/" element={<Presentation />} />
+      <Route path="/area/:areaId" element={<AreaIndex />} />
     </Routes>
   </>
 );
