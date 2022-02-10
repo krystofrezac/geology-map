@@ -47,6 +47,8 @@ const AreaList: React.FC<AreaListProps> = props => {
             onMarkersShowClick={() => handleMarkersShowClick(area.id)}
             onAreaEdit={() => props.onAreaEdit(area.id)}
             onAreaDelete={() => props.onAreaDelete(area.id)}
+            onAreaMoveUp={() => props.onAreaMoveUp(area.id)}
+            onAreaMoveDown={() => props.onAreaMoveDown(area.id)}
           />,
           ...area.extensions.map((extension, index) => (
             <AreaListItem

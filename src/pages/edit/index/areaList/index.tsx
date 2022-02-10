@@ -5,6 +5,8 @@ import {
   deleteArea,
   findArea,
   hideAreaMarkers,
+  moveAreaDown,
+  moveAreaUp,
   showAreaMarkers,
   startAddingArea,
   startEditingArea,
@@ -65,6 +67,13 @@ const AreaListIndex: React.FC = () => {
     setState(prevState => ({ ...prevState, deleteArea: undefined }));
   };
 
+  const handleAreaMoveUp = (id: string): void => {
+    dispatch(moveAreaUp({ areaId: id }));
+  };
+  const handleAreaMoveDown = (id: string): void => {
+    dispatch(moveAreaDown({ areaId: id }));
+  };
+
   return (
     <>
       <AreaList
@@ -78,6 +87,8 @@ const AreaListIndex: React.FC = () => {
         onMarkersHide={handleMarkersHide}
         onAreaEdit={handleAreaEdit}
         onAreaDelete={handleOpenDeleteModal}
+        onAreaMoveUp={handleAreaMoveUp}
+        onAreaMoveDown={handleAreaMoveDown}
       />
       <DeleteModal
         area={state.deleteArea}

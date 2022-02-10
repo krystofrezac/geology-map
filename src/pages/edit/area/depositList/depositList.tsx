@@ -1,7 +1,9 @@
 import React from 'react';
 
 import {
+  ChevronDownIcon,
   ChevronLeftIcon,
+  ChevronUpIcon,
   LocationMarkerIcon,
   PencilIcon,
   PlusIcon,
@@ -37,6 +39,24 @@ const DepositList: React.FC<DepositListProps> = props => (
       <div />
       {props.area.deposits.map(deposit => (
         <div key={deposit.id} className="flex flex-row gap-1 items-center py-2">
+          <div className="flex flex-col">
+            <button
+              type="button"
+              className="w-3 h-3 hover:bg-slate-200 rounded transition-colors"
+            >
+              <ChevronUpIcon
+                onClick={() => props.onDepositMoveUp(deposit.id)}
+              />
+            </button>
+            <button
+              type="button"
+              className="w-3 h-3 hover:bg-slate-200 rounded transition-colors"
+            >
+              <ChevronDownIcon
+                onClick={() => props.onDepositMoveDown(deposit.id)}
+              />
+            </button>
+          </div>
           <ColorDotIndex color={deposit.color} />
           <span className="pl-1"> {deposit.name}</span>
 

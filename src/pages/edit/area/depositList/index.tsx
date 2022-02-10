@@ -5,6 +5,8 @@ import {
   deleteDeposit,
   findDeposit,
   hideDepositMarkers,
+  moveDepositDown,
+  moveDepositUp,
   showDepositMarkers,
   startAddingDeposit,
   startEditingDeposit,
@@ -70,6 +72,13 @@ const DepositListIndex: React.FC<DepositListIndexProps> = props => {
     dispatch(showDepositMarkers({ areaId: props.area.id, depositId: id }));
   };
 
+  const handleDepositMoveUp = (id: string): void => {
+    dispatch(moveDepositUp({ areaId: props.area.id, depositId: id }));
+  };
+  const handleDepositMoveDown = (id: string): void => {
+    dispatch(moveDepositDown({ areaId: props.area.id, depositId: id }));
+  };
+
   return (
     <>
       <DepositList
@@ -81,6 +90,8 @@ const DepositListIndex: React.FC<DepositListIndexProps> = props => {
         onDepositDelete={handleDepositDelete}
         onDepositCoordsEdit={handleDepositCoordsEdit}
         onDepositMarkersShow={handleDepositMarkersShow}
+        onDepositMoveUp={handleDepositMoveUp}
+        onDepositMoveDown={handleDepositMoveDown}
       />
       <DeleteModal
         deposit={state.deletingDeposit}

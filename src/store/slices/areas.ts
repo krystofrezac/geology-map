@@ -376,6 +376,65 @@ const areasSlice = createSlice({
 
       state.movingEditingDepositCoordsIndex = undefined;
     },
+    moveAreaUp(state, action: PayloadAction<{ areaId: string }>) {
+      const areaIndex = state.areas.findIndex(
+        area => area.id === action.payload.areaId,
+      );
+      if (areaIndex === -1 || areaIndex === 0) return;
+
+      const up = state.areas[areaIndex - 1];
+      state.areas[areaIndex - 1] = state.areas[areaIndex];
+      state.areas[areaIndex] = up;
+    },
+    moveAreaDown(state, action: PayloadAction<{ areaId: string }>) {
+      const areaIndex = state.areas.findIndex(
+        area => area.id === action.payload.areaId,
+      );
+      if (areaIndex === -1 || areaIndex === state.areas.length - 1) return;
+      const down = state.areas[areaIndex + 1];
+      state.areas[areaIndex + 1] = state.areas[areaIndex];
+      state.areas[areaIndex] = down;
+    },
+    moveDepositUp(
+      state,
+      action: PayloadAction<{ areaId: string; depositId: string }>,
+    ) {
+      const area = findRootArea(state.areas, action.payload.areaId);
+      const depositIndex = area?.deposits.findIndex(
+        a => a.id === action.payload.depositId,
+      );
+      if (
+        !area ||
+        depositIndex === undefined ||
+        depositIndex === -1 ||
+        depositIndex === 0
+      )
+        return;
+
+      const up = area.deposits[depositIndex - 1];
+      area.deposits[depositIndex - 1] = area.deposits[depositIndex];
+      area.deposits[depositIndex] = up;
+    },
+    moveDepositDown(
+      state,
+      action: PayloadAction<{ areaId: string; depositId: string }>,
+    ) {
+      const area = findRootArea(state.areas, action.payload.areaId);
+      const depositIndex = area?.deposits.findIndex(
+        a => a.id === action.payload.depositId,
+      );
+      if (
+        !area ||
+        depositIndex === undefined ||
+        depositIndex === -1 ||
+        depositIndex === area.deposits.length - 1
+      )
+        return;
+
+      const down = area.deposits[depositIndex + 1];
+      area.deposits[depositIndex + 1] = area.deposits[depositIndex];
+      area.deposits[depositIndex] = down;
+    },
   },
   extraReducers: builder => {
     builder
@@ -424,6 +483,10 @@ export const {
   startMovingEditingDepositMarker,
   stopMovingEditingDepositMarker,
   moveEditingDepositMarker,
+  moveAreaUp,
+  moveAreaDown,
+  moveDepositUp,
+  moveDepositDown,
 } = areasSlice.actions;
 
 export default areasSlice.reducer;

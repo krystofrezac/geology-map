@@ -1,6 +1,8 @@
 import React from 'react';
 
 import {
+  ChevronDownIcon,
+  ChevronUpIcon,
   EyeIcon,
   LocationMarkerIcon,
   PencilIcon,
@@ -16,9 +18,23 @@ import { AreaListItemProps } from './types';
 
 const AreaListItem: React.FC<AreaListItemProps> = props => (
   <div className="flex gap-1 py-2">
-    <div className="flex flex-row items-center">
+    <div className="flex flex-row gap-2 items-center">
+      <div className="flex flex-col">
+        <button
+          type="button"
+          className="w-3 h-3 hover:bg-slate-200 rounded transition-colors"
+        >
+          {props.rootArea && <ChevronUpIcon onClick={props.onAreaMoveUp} />}
+        </button>
+        <button
+          type="button"
+          className="w-3 h-3 hover:bg-slate-200 rounded transition-colors"
+        >
+          {props.rootArea && <ChevronDownIcon onClick={props.onAreaMoveDown} />}
+        </button>
+      </div>
       <ColorDotIndex color={props.area.color} />
-      <span className="pl-2"> {props.area.name}</span>
+      <span> {props.area.name}</span>
     </div>
     <IconButtonIndex
       className="ml-auto btn-error"

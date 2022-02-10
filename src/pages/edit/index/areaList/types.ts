@@ -16,6 +16,8 @@ export interface AreaListProps {
   onMarkersHide: () => void;
   onAreaEdit: (id: string) => void;
   onAreaDelete: (id: string) => void;
+  onAreaMoveUp: (id: string) => void;
+  onAreaMoveDown: (id: string) => void;
 }
 
 export interface AreaListItemProps {
@@ -28,6 +30,8 @@ export interface AreaListItemProps {
   onMarkersShowClick: () => void;
   onAreaEdit: () => void;
   onAreaDelete: () => void;
+  onAreaMoveUp?: () => void;
+  onAreaMoveDown?: () => void;
 }
 
 export interface DeleteModalProps {

@@ -18,6 +18,8 @@ export interface DepositListProps {
   onDepositDelete: (id: string) => void;
   onDepositCoordsEdit: (id: string) => void;
   onDepositMarkersShow: (id: string) => void;
+  onDepositMoveUp: (id: string) => void;
+  onDepositMoveDown: (id: string) => void;
 }
 
 export interface DeleteModalProps {
