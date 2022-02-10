@@ -6,6 +6,8 @@ import { findDeposit, findRootArea } from 'store/slices/areas';
 import {
   closeDetailDeposit,
   openDetailDeposit,
+  startHighlightDeposit,
+  stopHighlightDeposit,
 } from 'store/slices/presentation';
 
 import DepositList from './depositList';
@@ -33,11 +35,24 @@ const AreaIndex: React.FC = () => {
     dispatch(closeDetailDeposit());
   };
 
+  const handleStartHighlightDeposit = (id: string): void => {
+    dispatch(startHighlightDeposit({ depositId: id }));
+  };
+
+  const handleStopHighlightDeposit = (): void => {
+    dispatch(stopHighlightDeposit());
+  };
+
   if (!area) return null;
 
   return (
     <>
-      <DepositList area={area} onDetailOpen={handleDetailOpen} />
+      <DepositList
+        area={area}
+        onDetailOpen={handleDetailOpen}
+        onStartHighlight={handleStartHighlightDeposit}
+        onStopHighlight={handleStopHighlightDeposit}
+      />
       <DetailModal deposit={detailDeposit} onClose={handleDetailClose} />
     </>
   );

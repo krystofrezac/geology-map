@@ -15,7 +15,12 @@ const AreaList: React.FC<AreaListProps> = props => (
     <SideCardIndex>
       <SideCardTitle>Oblasti</SideCardTitle>
       {props.areas.map(area => (
-        <div key={area.id} className="flex gap-1 py-2">
+        <div
+          key={area.id}
+          className="flex gap-1 py-2"
+          onMouseEnter={() => props.onStartHighlight(area.id)}
+          onMouseLeave={props.onStopHighlight}
+        >
           <div className="flex flex-row items-center">
             <ColorDotIndex color={area.color} />
             <span className="pl-2"> {area.name}</span>

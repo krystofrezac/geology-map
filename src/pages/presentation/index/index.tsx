@@ -2,7 +2,12 @@ import React from 'react';
 
 import { useDispatch, useSelector } from 'store/hooks';
 import { findRootArea } from 'store/slices/areas';
-import { closeDetailArea, openDetailArea } from 'store/slices/presentation';
+import {
+  closeDetailArea,
+  openDetailArea,
+  startHighlightArea,
+  stopHighlightArea,
+} from 'store/slices/presentation';
 
 import AreaList from './areaList';
 import DetailModal from './detailModal';
@@ -22,9 +27,22 @@ const PresentationIndex: React.FC = () => {
     dispatch(closeDetailArea());
   };
 
+  const handleStartHighlightArea = (id: string): void => {
+    dispatch(startHighlightArea({ areaId: id }));
+  };
+
+  const handleStopHighlightArea = (): void => {
+    dispatch(stopHighlightArea());
+  };
+
   return (
     <>
-      <AreaList areas={areas} onDetailOpen={handleDetailOpen} />
+      <AreaList
+        areas={areas}
+        onDetailOpen={handleDetailOpen}
+        onStartHighlight={handleStartHighlightArea}
+        onStopHighlight={handleStopHighlightArea}
+      />
       <DetailModal area={detailArea} onClose={handleDetailClose} />
     </>
   );

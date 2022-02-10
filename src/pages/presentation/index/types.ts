@@ -4,6 +4,8 @@ export interface AreaListProps {
   areas: RootArea[];
 
   onDetailOpen: (id: string) => void;
+  onStartHighlight: (id: string) => void;
+  onStopHighlight: () => void;
 }
 
 export interface DetailModalProps {

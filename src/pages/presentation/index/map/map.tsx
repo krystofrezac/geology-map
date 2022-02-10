@@ -5,20 +5,40 @@ import { Area } from 'store/slices/types/areas';
 
 import { MapProps } from './types';
 
-const getArea = (area: Area): JSX.Element => (
+const getArea = (
+  area: Area,
+  highlight: boolean,
+  transparent: boolean,
+): JSX.Element => (
   <Polygon
     key={area.id}
     id={area.id}
     coords={area.coords}
-    options={{ color: area.color, opacity: 0.5, outlineOpacity: 0 }}
+    options={{
+      color: area.color,
+      opacity: transparent && !highlight ? 0.2 : 0.5,
+      outlineColor: area.color,
+      outlineOpacity: highlight ? 1 : 0,
+    }}
   />
 );
 
 const Map: React.FC<MapProps> = props => {
-  const renderedAreas = props.areas.map(area => [
-    getArea(area),
-    ...area.extensions.map(ext => getArea({ ...ext, color: area.color })),
-  ]);
+  const somethingIsHighlighted = props.higlightArea !== undefined;
+
+  const renderedAreas = props.areas.map(area => {
+    const highlight = props.higlightArea === area.id;
+    return [
+      getArea(area, highlight, somethingIsHighlighted),
+      ...area.extensions.map(ext =>
+        getArea(
+          { ...ext, color: area.color },
+          highlight,
+          somethingIsHighlighted,
+        ),
+      ),
+    ];
+  });
 
   return <PathLayer>{renderedAreas}</PathLayer>;
 };

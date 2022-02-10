@@ -19,14 +19,25 @@ const getArea = (area: Area): JSX.Element => (
 );
 
 const Map: React.FC<MapProps> = props => {
-  const renderedDeposits = props.area.deposits.map(deposit => (
-    <Polygon
-      id={deposit.id}
-      key={deposit.id}
-      coords={deposit.coords}
-      options={{ color: deposit.color, opacity: 0.5, outlineOpacity: 0 }}
-    />
-  ));
+  const somethingIsHighlighted = props.higlightDeposit !== undefined;
+
+  const renderedDeposits = props.area.deposits.map(deposit => {
+    const highlight = deposit.id === props.higlightDeposit;
+
+    return (
+      <Polygon
+        id={deposit.id}
+        key={deposit.id}
+        coords={deposit.coords}
+        options={{
+          color: deposit.color,
+          opacity: somethingIsHighlighted && !highlight ? 0.2 : 0.5,
+          outlineColor: deposit.color,
+          outlineOpacity: highlight ? 1 : 0,
+        }}
+      />
+    );
+  });
 
   const renderedArea = [
     getArea(props.area),

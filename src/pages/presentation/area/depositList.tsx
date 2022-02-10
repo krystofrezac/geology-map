@@ -22,7 +22,12 @@ const DepositList: React.FC<DepositListProps> = props => (
         <SideCardTitle>{props.area.name}</SideCardTitle>
       </div>
       {props.area.deposits.map(deposit => (
-        <div key={deposit.id} className="flex gap-1 py-2">
+        <div
+          key={deposit.id}
+          className="flex gap-1 py-2"
+          onMouseEnter={() => props.onStartHighlight(deposit.id)}
+          onMouseLeave={props.onStopHighlight}
+        >
           <div className="flex flex-row items-center">
             <ColorDotIndex color={deposit.color} />
             <span className="pl-2"> {deposit.name}</span>
