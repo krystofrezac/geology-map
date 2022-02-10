@@ -22,8 +22,8 @@ const MapIndex: React.FC<MapProps> = props => (
   >
     <KeyboardControl />
     <MouseControl zoom pan wheel />
-    <ZoomControl left={10} />
-    <CompassControl left={10} top={50} />
+    <ZoomControl left={10} top={70} />
+    <CompassControl left={10} top={110} />
     {props.children}
   </Map>
 );
