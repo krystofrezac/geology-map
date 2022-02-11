@@ -15,3 +15,9 @@ Or you can use docker.
 
 ## Good to know
 - If you don't want to get compile error when there is some eslint error add `ESLINT_NO_DEV=true` environment variable. 
+
+## Screenshots
+![](docs/images/areas.jpeg)
+![](docs/images/areaDetail.jpeg)
+![](docs/images/area.jpeg)
+![](docs/images/depositDetail.jpeg)
