@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { PathLayer, Polygon } from 'react-mapycz';
+import { Marker, MarkerLayer, PathLayer, Polygon } from 'react-mapycz';
 import { Area } from 'store/slices/types/areas';
 
 import { MapProps } from './types';
@@ -19,10 +19,10 @@ const getArea = (area: Area): JSX.Element => (
 );
 
 const Map: React.FC<MapProps> = props => {
-  const somethingIsHighlighted = props.higlightDeposit !== undefined;
+  const somethingIsHighlighted = props.highlightDeposit !== undefined;
 
   const renderedDeposits = props.area.deposits.map(deposit => {
-    const highlight = deposit.id === props.higlightDeposit;
+    const highlight = deposit.id === props.highlightDeposit?.id;
 
     return (
       <Polygon
@@ -39,6 +39,19 @@ const Map: React.FC<MapProps> = props => {
     );
   });
 
+  const renderHighlightMarker = (): JSX.Element | null => {
+    if (!props.highlightDeposit) return null;
+    const [latSum, lngSum] = props.highlightDeposit.coords.reduce(
+      ([prevLat, prevLng], curr) => [prevLat + curr.lat, prevLng + curr.lng],
+      [0, 0],
+    );
+    const coordsLength = props.highlightDeposit.coords.length;
+    const latAvg = latSum / coordsLength;
+    const lngAvg = lngSum / coordsLength;
+
+    return <Marker coords={{ lat: latAvg, lng: lngAvg }} />;
+  };
+
   const renderedArea = [
     getArea(props.area),
     ...props.area.extensions.map(ext =>
@@ -47,10 +60,13 @@ const Map: React.FC<MapProps> = props => {
   ];
 
   return (
-    <PathLayer>
-      {renderedArea}
-      {renderedDeposits}
-    </PathLayer>
+    <>
+      <MarkerLayer>{renderHighlightMarker()}</MarkerLayer>
+      <PathLayer>
+        {renderedArea}
+        {renderedDeposits}
+      </PathLayer>
+    </>
   );
 };
 

@@ -16,7 +16,6 @@ const getAreaPolygon = (area: Area): JSX.Element => (
     }}
   />
 );
-
 const getDepositPolygon = (
   deposit: Deposit,
   transparent: boolean = false,
@@ -90,9 +89,23 @@ const Map: React.FC<MapProps> = props => {
       <Marker key={`${coords.lat}-${coords.lng}`} coords={coords} />
     ));
 
+  const renderedCenterMarkers = props.area.deposits.map(deposit => {
+    const [latSum, lngSum] = deposit.coords.reduce(
+      ([prevLat, prevLng], curr) => [prevLat + curr.lat, prevLng + curr.lng],
+      [0, 0],
+    );
+    const coordsLength = deposit.coords.length;
+    if (coordsLength < 3) return undefined;
+    const latAvg = latSum / coordsLength;
+    const lngAvg = lngSum / coordsLength;
+
+    return <Marker coords={{ lat: latAvg, lng: lngAvg }} />;
+  });
+
   return (
     <>
       <MarkerLayer>
+        {renderedCenterMarkers}
         {drawEditingDepositCoordsMarkers()}
         {drawMarkersShowDepositMarkers()}
       </MarkerLayer>
