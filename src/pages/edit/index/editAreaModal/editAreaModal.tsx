@@ -44,6 +44,7 @@ const EditAreaModal: React.FC<EditAreaModalProps> = props => {
       name: '',
       color: '#000000',
       extend: undefined,
+      description: '',
     }));
     props.onClose();
   };

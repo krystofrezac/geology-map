@@ -42,7 +42,7 @@ const EditDepositModal: React.FC<EditDepositModalProps> = props => {
     if (state.name.length === 0) return;
 
     props.onSubmit(state);
-    setState(s => ({ ...s, name: '', color: '' }));
+    setState(s => ({ ...s, name: '', color: '', description: '' }));
   };
 
   return (
